@@ -18,15 +18,23 @@ while choice != 0 and choice >= 3:
 print(f"Your child will be called {names[choice]}")
 
 # Practicing with looping
-for name in names:
-    print(name)
+#for name in names:
+    #print(name)
 
 # Practising with Dictionaries
 richor = {"Tomoyo": "super Rich", "Laurie": "rich", "Sakura": "middle Class"}
 
-print("Your kid's name's spelled:")
-for character in names[choice]:
-    print(character)
+#print("Your kid's name's spelled:")
+#for character in names[choice]:
+    #print(character)
 
 print(f"You've chosen {names[choice]}, which means that you both are gonna be {richor[names[choice]]}")
-      
+richor["Marie"] = "Upper middle class"
+#print(richor)
+
+# Practice with Functions 
+def girl(x):
+    return x - 1
+
+kids = int(input("Choose how hamy kids you want: "))
+print(f"You're gonna have {girl(kids)} kids, congrats!")
