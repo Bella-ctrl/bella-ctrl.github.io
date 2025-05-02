@@ -38,3 +38,13 @@ def girl(x):
 
 kids = int(input("Choose how hamy kids you want: "))
 print(f"You're gonna have {girl(kids)} kids, congrats!")
+
+# Practice with OOP
+class point():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+p = point(2, 8)
+print(p.x)
+print(p.y)
