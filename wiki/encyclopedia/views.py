@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render
 
 from . import util
@@ -8,9 +9,16 @@ def index(request):
         "entries": util.list_entries()
     })
 
-def wiki(request):
-    entry = ut
-    return render()
+def wiki(request, title): 
+    content = util.get_entry
+    if content():
+        return render(request, "encyclopedia/entry.html", {                
+            "title": title
+            "content": content
+        })
+    if not content(): 
+        return Http404("Requested page was not found") 
+
 #def greet(request, name):
     #return render(request, "hello/greet.html", {
         #"name": name.capitalize()
