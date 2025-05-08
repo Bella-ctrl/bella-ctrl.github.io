@@ -11,3 +11,7 @@ def index(request):
 def wiki(request):
     entry = ut
     return render()
+#def greet(request, name):
+    #return render(request, "hello/greet.html", {
+        #"name": name.capitalize()
+    #})
