@@ -9,7 +9,8 @@
 
     <ul>
         {% for entry in entries %}
-            <li>{{ entry }}</li>
+            <!-- It's not getting you to the entry page YET, but what is to change is the "index"-->
+            <li><a href="{% url 'index' %}">{{ entry }}</a></li>
         {% endfor %}
     </ul>
 
