@@ -11,10 +11,10 @@ def index(request):
 
 def wiki(request, title): 
     content = util.get_entry
-    if content():
+    if content(title):
         return render(request, "encyclopedia/entry.html", {                
             "title": title, 
             "content": content
         })
-    if not content(): 
+    if not content(title): 
         return Http404("Requested page was not found")
