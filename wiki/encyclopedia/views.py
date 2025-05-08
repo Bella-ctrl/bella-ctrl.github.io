@@ -18,8 +18,3 @@ def wiki(request, title):
         })
     if not content(): 
         return Http404("Requested page was not found") 
-
-#def greet(request, name):
-    #return render(request, "hello/greet.html", {
-        #"name": name.capitalize()
-    #})
