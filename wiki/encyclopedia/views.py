@@ -13,8 +13,8 @@ def wiki(request, title):
     content = util.get_entry
     if content():
         return render(request, "encyclopedia/entry.html", {                
-            "title": title
+            "title": title, 
             "content": content
         })
     if not content(): 
-        return Http404("Requested page was not found") 
+        return Http404("Requested page was not found")
