@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from . import util
 
@@ -18,3 +18,18 @@ def wiki(request, title):
         })
     if not content(title): 
         return Http404("Requested page was not found")
+
+def search(request):
+    query = request.GET.get('q', '')
+    entries = util.get_entry
+
+    if query in entries:
+        return redirect('entry', title=query)
+    
+    search_results = [entry for entry in entries if query.lower() in entry.lower()]
+    return render(request, "enciclopedia/search_result.html", {
+        'query': query
+        'results': search_results
+    })
+
+    
