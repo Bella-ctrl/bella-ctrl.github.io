@@ -27,9 +27,7 @@ def search(request):
         return redirect('entry', title=query)
     
     search_results = [entry for entry in entries if query.lower() in entry.lower()]
-    return render(request, "enciclopedia/search_result.html", {
+    return render(request, "encyclopedia/search_result.html", {
         'query': query
         'results': search_results
     })
-
-    
