@@ -8,3 +8,6 @@ def index(request):
         "entries": util.list_entries()
     })
 
+def wiki(request):
+    entry = ut
+    return render()
