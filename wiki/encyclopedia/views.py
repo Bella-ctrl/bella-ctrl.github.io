@@ -50,7 +50,8 @@ def new_page(request):
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
 
-            if util.get_entry(title):
+            existing_entries = util.list_entries()
+            if any(title.lower() == entry.lower() for entry in existing_entries):
                 messages.error(request, F"An entry with the title '{title}' already exists.")
             else:
                 util.save_entry(title, content)
