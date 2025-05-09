@@ -1,14 +1,18 @@
-from django.http import Http404
-from django.shortcuts import render, redirect
-from django import forms
-from django.urls import reverse
 from django.contrib import messages
+from django.http import Http404
+from django import forms
+from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
 from . import util
 
 class NewPageForm(forms.Form):
     title = forms.CharField(label="Title", max_length=100)
     content = forms.CharField(label="Content", widget=forms.Textarea)
+
+class EditPageForm(forms.Form):
+    content = forms.CharField(widget=forms.Textarea)
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -61,4 +65,23 @@ def new_page(request):
     
     return render(request, "encyclopedia/new_page.html", {
         "form": form
+    })
+
+def edit_page(request, title):
+    content = util.get_entry(title)
+    if content is None:
+        raise Http404("Entry not found")
+
+    if request.method == "POST":
+        form = EditPageForm(request.POST)
+        if form.is_valid():
+            new_content = form.cleaned_data["content"]
+            util.save_entry(title, new_content)
+            return redirect("entry", title=title)
+    else:
+        form = EditPageForm(initial={"content": content})
+    
+    return render(request, "encyclopedia/edit_page.html", {
+        "form": form,
+        "title": title
     })
