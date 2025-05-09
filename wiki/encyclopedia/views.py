@@ -4,6 +4,7 @@ from django import forms
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+import random
 
 from . import util
 
@@ -85,3 +86,5 @@ def edit_page(request, title):
         "form": form,
         "title": title
     })
+
+def random_page(request):
