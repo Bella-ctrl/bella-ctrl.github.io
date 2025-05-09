@@ -39,7 +39,7 @@ def search(request):
     
     for entry in entries:
         if query == entry.lower():
-            return redirect('wiki', title=entry)  
+            return redirect('entry', title=entry)  
     
     search_results = [
         entry for entry in entries 
