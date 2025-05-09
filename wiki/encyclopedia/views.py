@@ -4,6 +4,7 @@ from django import forms
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+import markdown2
 import random
 
 from . import util
@@ -23,9 +24,10 @@ def index(request):
 def wiki(request, title): 
     content = util.get_entry
     if content(title):
+        html_content = markdown2.markdown(content)
         return render(request, "encyclopedia/entry.html", {                
             "title": title, 
-            "content": content
+            "content": html_content
         })
     if not content(title): 
         return Http404("Requested page was not found")
