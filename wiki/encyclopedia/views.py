@@ -22,15 +22,16 @@ def index(request):
     })
 
 def wiki(request, title): 
-    content = util.get_entry
-    if content(title):
-        html_content = markdown2.markdown(content)
-        return render(request, "encyclopedia/entry.html", {                
-            "title": title, 
-            "content": html_content
-        })
-    if not content(title): 
+    content = util.get_entry(title)
+    if content is None:
         return Http404("Requested page was not found")
+    
+    html_content = markdown2.markdown(content)
+
+    return render(request, "encyclopedia/entry.html", {                
+        "title": title, 
+        "content": html_content
+    })
 
 def search(request):
     query = request.GET.get('q', '').strip().lower()  
@@ -38,7 +39,7 @@ def search(request):
     
     for entry in entries:
         if query == entry.lower():
-            return redirect('entry', title=entry)  
+            return redirect('wiki', title=entry)  
     
     search_results = [
         entry for entry in entries 
