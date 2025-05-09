@@ -20,11 +20,12 @@ def wiki(request, title):
         return Http404("Requested page was not found")
 
 def search(request):
-    query = request.GET.get('q', '')
-    entries = util.get_entry
+    query = request.GET.get('q', '').strip()
+    entries = util.list_entries()
 
-    if query in entries:
-        return redirect('entry', title=query)
+    if query.lower() in [entry.lower() for entry in entries]:
+        exact_match = next(entry for entry in entries if entry.lower() == query.lower())
+        return redirect('entry', title=exact_match)
     
     search_results = [entry for entry in entries if query.lower() in entry.lower()]
     return render(request, "encyclopedia/search_result.html", {
