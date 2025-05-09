@@ -88,3 +88,8 @@ def edit_page(request, title):
     })
 
 def random_page(request):
+    entries = util.list_entries()
+    if not entries:
+        raise Http404("No entries exist yet")
+    random_entry = random.choice(entries)
+    return redirect("entry", title=random_entry)
