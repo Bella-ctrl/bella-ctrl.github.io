@@ -10,5 +10,6 @@
         <div>
             {{ content | safe }}
         </div>
+        <a href="{% url 'edit_page' title=title %}" class="btn btn-secondary">Edit Page</a>
     </body>
 </html>
