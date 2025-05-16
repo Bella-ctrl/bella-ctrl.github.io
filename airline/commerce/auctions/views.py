@@ -2,18 +2,11 @@ from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 
+from .forms import CreateListingForm
 from .models import User, Listing
-
-class CreateListingForm(forms.Form):
-    class Meta: 
-        model = Listing
-        fields = ['title', 'description', 'starting_bid', 'image_url', 'category']
-        widgets = {
-            'description': forms.Textarea(attrs={'rows':4}),
-        }
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -72,6 +65,14 @@ def register(request):
 
 def create_listing(request):
     if request.method == "POST":
-        pass
+        form = CreateListingForm(request.POST)
+        if form.is_valid:
+            listing = form.save(commit=False)
+            listing.creator = request.user
+            listing.save()
+            return redirect("index")
     else: 
-        return render(request, "auctions/create.html")
+        form = CreateListingForm()
+    return render(request, "auctions/create.html", {
+        "forms": form
+    })
