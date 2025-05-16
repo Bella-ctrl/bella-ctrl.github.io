@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -6,6 +7,10 @@ from django.urls import reverse
 
 from .models import User
 
+class CreateListing(forms.Form):
+    title = forms.CharField()
+    description = forms.Textarea
+    starting_bid = forms.Textarea
 
 def index(request):
     return render(request, "auctions/index.html")
