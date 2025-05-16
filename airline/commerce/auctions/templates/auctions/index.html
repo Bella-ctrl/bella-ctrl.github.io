@@ -2,6 +2,23 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    TODO
+    <div class="row">
+        {% for listing in listings %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if listing.image_url %}
+                        <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ listing.title }}</h5>
+                        <p class="card-text">{{ listing.description }}</p>
+                        <p class="font-weight-bold">Current Price: ${{ listing.current_bid|default:listing.starting_bid }}</p>
+                        <a href="{% url 'listing_detail' listing.id %}" class="btn btn-primary">View Listing</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No active listings found.</p>
+        {% endfor %}
+    </div>
 {% endblock %}
