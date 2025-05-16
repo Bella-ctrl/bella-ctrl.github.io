@@ -5,12 +5,15 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Listing
 
-class CreateListing(forms.Form):
-    title = forms.CharField()
-    description = forms.Textarea()
-    starting_bid = forms.CharField()
+class CreateListingForm(forms.Form):
+    class Meta: 
+        model = Listing
+        fields = ['title', 'description', 'starting_bid', 'image_url', 'category']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows':4}),
+        }
 
 def index(request):
     return render(request, "auctions/index.html")
