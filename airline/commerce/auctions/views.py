@@ -9,8 +9,8 @@ from .models import User
 
 class CreateListing(forms.Form):
     title = forms.CharField()
-    description = forms.Textarea
-    starting_bid = forms.Textarea
+    description = forms.Textarea()
+    starting_bid = forms.CharField()
 
 def index(request):
     return render(request, "auctions/index.html")
