@@ -5,7 +5,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .forms import CreateListingForm
 from .models import User, Listing
 
 def index(request):
@@ -63,16 +62,25 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+class CreateListingForm(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = ['title', 'description', 'starting_bid', 'image_url', 'category']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 3}),
+        }
+
 def create_listing(request):
     if request.method == "POST":
         form = CreateListingForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():  
             listing = form.save(commit=False)
             listing.creator = request.user
             listing.save()
             return redirect("index")
-    else: 
+    else:
         form = CreateListingForm()
+    
     return render(request, "auctions/create.html", {
-        "forms": form
+        "form": form
     })

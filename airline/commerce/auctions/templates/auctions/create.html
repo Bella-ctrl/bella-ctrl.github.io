@@ -5,9 +5,9 @@
     <!--They should be able to specify a title for the listing, a text-based description, and what the starting bid should be. 
     Users should also optionally be able to provide a URL for an image for the listing and/or a category (e.g. Fashion, Toys, Electronics, Home, etc.).
     -->
-    <form action="{% url 'create_listing' %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'create_listing' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p }}  
         <button type="submit" class="btn btn-primary">Submit</button>
-    </form> 
+    </form>
 {% endblock %}
