@@ -170,3 +170,32 @@ def watchlist(request):
         "listings": listings,
         "title": "Your Watchlist"
     })
+
+def categories(request):
+    categories = []
+    for choice in Listing.CATEGORY_CHOICES:
+        count = Listing.objects.filter(category=choice[0], is_active=True).count()
+        if count > 0:
+            categories.append({
+                'code': choice[0],
+                'name': choice[1],
+                'count': count
+            })
+    
+    return render(request, "auctions/categories.html", {
+        "categories": categories
+    })
+
+def category_listings(request, category_code):
+    category_name = dict(Listing.CATEGORY_CHOICES).get(category_code, "Unknown")
+    
+    active_listings = Listing.objects.filter(
+        category=category_code,
+        is_active=True
+    ).order_by('-created_at')
+    
+    return render(request, "auctions/category.html", {
+        "category_code": category_code,
+        "category_name": category_name,
+        "listings": active_listings
+    })
