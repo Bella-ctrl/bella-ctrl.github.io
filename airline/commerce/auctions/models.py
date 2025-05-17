@@ -15,6 +15,7 @@ class Listing(models.Model):
     image_url = models.URLField(blank=True, null=True)
     category = models.CharField(max_length=50, blank=True, null=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
+    winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="won_listings")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -26,8 +27,16 @@ class Bids(models.Model):
     bid_time = models.DateTimeField(auto_now_add=True)
 
 # Comments on Auctions listings 
-class Comments(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
-    listing = models.ForeignKey(Listing, on_delete=models.CharField, related_name="comments")
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment")
+    listing = models.ForeignKey(Listing, on_delete=models.CharField, related_name="comment")
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class MatchList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'listing')
