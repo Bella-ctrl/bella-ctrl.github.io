@@ -29,6 +29,12 @@
                 <p><strong>Current Price:</strong> ${{ listing.current_bid|default:listing.starting_bid }}</p>
                 <p><small class="text-muted">Listed by: {{ listing.creator.username }}</small></p>
                 
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
                 {% if user.is_authenticated %}
                     <!-- Watchlist button -->
                     <form method="post" class="mb-3">
