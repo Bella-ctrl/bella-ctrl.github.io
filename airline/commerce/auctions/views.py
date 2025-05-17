@@ -96,9 +96,10 @@ class CommentForm(forms.Form):
 
 def listing_detail(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
-    in_watch = False
+    in_watchlist = False
     is_creator = False
     is_winner = False
+    comments = Comment.objects.filter(listing=listing).order_by('-created_at')
 
     if request.user.is_authenticated:
         in_watchlist = WatchList.objects.filter(user=request.user, listing=listing).exists()
@@ -107,12 +108,14 @@ def listing_detail(request, listing_id):
     
     if request.method == "POST" and request.user.is_authenticated:
         if 'watchlist' in request.POST:
-            if in_watch:
+            if in_watchlist:
                 WatchList.objects.filter(user=request.user, listing=listing).delete()
                 messages.success(request, "Removed from your watch-list")
             else:
                 WatchList.objects.create(user=request.user, listing=listing)
+                messages.success(request, "Added to your watch-list")
             return redirect('listing_detail', listing_id=listing.id)
+        
         elif 'bid' in request.POST:
             bid_amount = float(request.POST.get('bid_amount', 0))
             if bid_amount >= listing.starting_bid and (listing.current_bid is None or bid_amount > listing.current_bid):
@@ -127,6 +130,7 @@ def listing_detail(request, listing_id):
             else: 
                 messages.error(request, "Bid must be higher than current price")
             return redirect('listing_detail', listing_id=listing.id)
+        
         elif 'close' in request.POST and is_creator:
             if listing.current_bid:
                 listing.winner = Bid.objects.filter(listing=listing).order_by('-amount').first().bidder
@@ -134,6 +138,7 @@ def listing_detail(request, listing_id):
             listing.save()
             messages.success(request, "Auction closed successfully!")
             return redirect('listing_detail', listing_id=listing.id)
+        
         elif 'comment' in request.POST:
             form = CommentForm(request.POST)
             if form.is_valid():
@@ -144,13 +149,12 @@ def listing_detail(request, listing_id):
                 )
                 messages.success(request, "Comment added!")
                 return redirect('listing_detail', listing_id=listing.id)
-        
-        comments = Comment.objects.filter(listing=listing).order_by('-created_at')
-        return render(request, "auctions/listing_detail.html", {
-            "listing": listing
-            "in_watchlist": in_watchlist,
-            "is_creator": is_creator
-            "is_winner": is_winner
-            "comments": comments,
-            "comment_form": CommentForm()
-        })
+    
+    return render(request, "auctions/listing_detail.html", {
+        "listing": listing,
+        "in_watchlist": in_watchlist,
+        "is_creator": is_creator,
+        "is_winner": is_winner,
+        "comments": comments,
+        "comment_form": CommentForm()
+    })
