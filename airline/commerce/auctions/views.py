@@ -75,7 +75,7 @@ class CreateListingForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 3}),
             'category': forms.Select(choices=Listing.CATEGORY_CHOICES),
         }
-        
+
 def create_listing(request):
     if request.method == "POST":
         form = CreateListingForm(request.POST)
@@ -158,4 +158,15 @@ def listing_detail(request, listing_id):
         "is_winner": is_winner,
         "comments": comments,
         "comment_form": CommentForm()
+    })
+
+@login_required
+def watchlist(request):
+    # Get all watchlist items for the current user with related listing data
+    watchlist_items = WatchList.objects.filter(user=request.user).select_related('listing')
+    listings = [item.listing for item in watchlist_items]
+    
+    return render(request, "auctions/watchlist.html", {
+        "listings": listings,
+        "title": "Your Watchlist"
     })
