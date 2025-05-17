@@ -73,8 +73,9 @@ class CreateListingForm(forms.ModelForm):
         fields = ['title', 'description', 'starting_bid', 'image_url', 'category']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3}),
+            'category': forms.Select(choices=Listing.CATEGORY_CHOICES),
         }
-
+        
 def create_listing(request):
     if request.method == "POST":
         form = CreateListingForm(request.POST)
