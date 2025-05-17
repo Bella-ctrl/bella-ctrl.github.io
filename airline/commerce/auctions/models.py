@@ -33,7 +33,7 @@ class Comment(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-class MatchList(models.Model):
+class WatchList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     added_at = models.DateTimeField(auto_now_add=True)

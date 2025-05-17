@@ -1,11 +1,13 @@
 from django import forms
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
-from .models import User, Listing
+from .models import User, Listing, WatchList, Comment, Bid
 
 def index(request):
     active_listings = Listing.objects.filter(is_active=True)
@@ -88,8 +90,67 @@ def create_listing(request):
         "form": form
     })
 
+
+class CommentForm(forms.Form):
+    text = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+
 def listing_detail(request, listing_id):
     listing = get_object_or_404(Listing, pk=listing_id)
-    return render(request, "auctions/listing_detail.html", {
-        "listing": listing
-    })
+    in_watch = False
+    is_creator = False
+    is_winner = False
+
+    if request.user.is_authenticated:
+        in_watchlist = WatchList.objects.filter(user=request.user, listing=listing).exists()
+        is_creator = request.user == listing.creator
+        is_winner = request.user == listing.winner
+    
+    if request.method == "POST" and request.user.is_authenticated:
+        if 'watchlist' in request.POST:
+            if in_watch:
+                WatchList.objects.filter(user=request.user, listing=listing).delete()
+                messages.success(request, "Removed from your watch-list")
+            else:
+                WatchList.objects.create(user=request.user, listing=listing)
+            return redirect('listing_detail', listing_id=listing.id)
+        elif 'bid' in request.POST:
+            bid_amount = float(request.POST.get('bid_amount', 0))
+            if bid_amount >= listing.starting_bid and (listing.current_bid is None or bid_amount > listing.current_bid):
+                Bid.objects.create(
+                    bidder=request.user,
+                    listing=listing,
+                    amount=bid_amount
+                )
+                listing.current_bid = bid_amount
+                listing.save()
+                messages.success(request, "Bid placed successfully!")
+            else: 
+                messages.error(request, "Bid must be higher than current price")
+            return redirect('listing_detail', listing_id=listing.id)
+        elif 'close' in request.POST and is_creator:
+            if listing.current_bid:
+                listing.winner = Bid.objects.filter(listing=listing).order_by('-amount').first().bidder
+            listing.is_active = False
+            listing.save()
+            messages.success(request, "Auction closed successfully!")
+            return redirect('listing_detail', listing_id=listing.id)
+        elif 'comment' in request.POST:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                Comment.objects.create(
+                    author=request.user,
+                    listing=listing, 
+                    text=form.cleaned_data['text']
+                )
+                messages.success(request, "Comment added!")
+                return redirect('listing_detail', listing_id=listing.id)
+        
+        comments = Comment.objects.filter(listing=listing).order_by('-created_at')
+        return render(request, "auctions/listing_detail.html", {
+            "listing": listing
+            "in_watchlist": in_watchlist,
+            "is_creator": is_creator
+            "is_winner": is_winner
+            "comments": comments,
+            "comment_form": CommentForm()
+        })
