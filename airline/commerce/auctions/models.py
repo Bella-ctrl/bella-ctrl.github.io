@@ -13,7 +13,15 @@ class Listing(models.Model):
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
     current_bid = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
-    category = models.CharField(max_length=50, blank=True, null=True)
+    CATEGORY_CHOICES = [
+        ('FASH', 'Fashion'),
+        ('TOYS', 'Toys'),
+        ('ELEC', 'Electronics'),
+        ('HOME', 'Home'),
+        ('ART', 'Art'),
+        ('OTHER', 'Other'),
+    ]
+    category = models.CharField(max_length=5, choices=CATEGORY_CHOICES, blank=True, null=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
     winner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="won_listings")
     is_active = models.BooleanField(default=True)
@@ -28,8 +36,8 @@ class Bid(models.Model):
 
 # Comments on Auctions listings 
 class Comment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment")
-    listing = models.ForeignKey(Listing, on_delete=models.CharField, related_name="comment")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
