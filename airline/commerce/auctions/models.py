@@ -20,9 +20,9 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 # Bids model
-class Bids(models.Model):
-    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
+class Bid(models.Model):
+    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bid")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bid")
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     bid_time = models.DateTimeField(auto_now_add=True)
 
