@@ -2,12 +2,27 @@
 <html lang="en">
     <head>
         <title>Colors</title>
-        <script src="colors.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Change font color to red
+                document.querySelector('#red').onclick = function() {
+                    document.querySelector('#hello').style.color = 'red';
+                }
+                // Change font color to blue
+                document.querySelector('#blue').onclick = function() {
+                    document.querySelector('#hello').style.color = 'blue';
+                }
+                // Change font color to green
+                document.querySelector('#green').onclick = function() {
+                    document.querySelector('#hello').style.color = 'green';
+                }
+            })   
+        </script>
     </head>
     <body>
         <h1 id="hello">Hello!</h1>
-        <button>Red</button>
-        <button>Blue</button>
-        <button>Green</button>
+        <button id="red">Red</button>
+        <button id="blue">Blue</button>
+        <button id="green">Green</button>
     </body>
 </html>
