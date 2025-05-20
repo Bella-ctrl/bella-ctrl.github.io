@@ -14,12 +14,18 @@
                     .then(data => {
                         const currency = document.querySelector('#currency').value;
                         const rate = data.rates[currency];
-                        document.querySelector('body').innerHTML = `1 USD is equal to ${rate.toFixed(2)} EUR`;
+
+                        if (rate !== undefined) {
+                            document.querySelector('#result').innerHTML = `1 USD is equal to ${rate.toFixed(2)} ${currency}`;
+                        }
+                        else {
+                            document.querySelector('#result').innerHTML = "Invalid currency code";
+                        }
                     })
                     
                     return false;
                 }
-            })
+            });
         </script>
     </head>
     <body>
