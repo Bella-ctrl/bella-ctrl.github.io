@@ -12,7 +12,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        const currency = document.querySelector('#currency').value;
+                        const currency = document.querySelector('#currency').value.toUpperCase();
                         const rate = data.rates[currency];
 
                         if (rate !== undefined) {
@@ -22,6 +22,9 @@
                             document.querySelector('#result').innerHTML = "Invalid currency code";
                         }
                     })
+                    .catch(error => {
+                        console.log('Error:', error);
+                    })        
                     
                     return false;
                 }
