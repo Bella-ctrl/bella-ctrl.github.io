@@ -9,7 +9,8 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
+                    const rate = data.rates.EUR;
+                    document.querySelector('body').innerHTML = `1 USD is equal to ${rate.toFixed(2)} EUR`;
                 })
             })
         </script>
