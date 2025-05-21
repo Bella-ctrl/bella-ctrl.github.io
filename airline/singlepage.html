@@ -9,6 +9,15 @@
                 display: none;
             }
         </style>
+        <script>
+            function showPage(page) {
+                document.querySelectorAll('div').forEach(div => {
+                    div.style.display = 'none';
+                })
+                document.querySelector(`#${page}`).style.display = 'block';
+            }
+
+        </script>
     </head>
     <body>
         <button data-page="page1">Page 1</button>
