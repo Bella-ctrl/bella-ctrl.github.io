@@ -24,12 +24,27 @@
                 animation-name: move;
                 animation-duration: 2s;
                 animation-fill-mode: forwards;
-                animation-iteration-count: 2; /* Does the animation two times */;
+                animation-iteration-count: 2; /*infinite*//* Does the animation two times */;
             }
         
         </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+               
+                const h1 = document.querySelector('h1');
+                h1.style.animationPlayState = 'paused'; // Property to pause the animation
+                document.querySelector('button').onclick = () => {
+                    if (h1.style.animationPlayState === 'paused') {
+                            h1.style.animationPlayState = 'running'; // Property to run the animation
+                    } else {
+                        h1.style.animationPlayState = 'paused';
+                    }
+                }
+            })
+        </script>
     </head>
     <body>
         <h1>Welcome</h1>
+        <button>Click Here</button>
     </body>
 </html>
