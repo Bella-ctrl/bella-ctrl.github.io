@@ -24,7 +24,7 @@
                 animation-name: move;
                 animation-duration: 2s;
                 animation-fill-mode: forwards;
-                animation-iteration-count: 2; /*infinite*//* Does the animation two times */;
+                animation-iteration-count: infinite; /*infinite*//* Does the animation two times */;
             }
         
         </style>
@@ -35,7 +35,7 @@
                 h1.style.animationPlayState = 'paused'; // Property to pause the animation
                 document.querySelector('button').onclick = () => {
                     if (h1.style.animationPlayState === 'paused') {
-                            h1.style.animationPlayState = 'running'; // Property to run the animation
+                        h1.style.animationPlayState = 'running'; // Property to run the animation
                     } else {
                         h1.style.animationPlayState = 'paused';
                     }
