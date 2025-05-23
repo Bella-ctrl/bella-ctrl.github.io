@@ -22,10 +22,22 @@
                     response: ""
                 });
 
+                function inputKeyPress(event) {
+                    
+                    
+                }
+
+                function updateResponse(event) {
+                    setState({
+                        ...state, 
+                        response: event.target.value
+                    });
+                }
+
                 return (
                     <div>
                         <div>{state.num1} + {state.num2}</div>
-                        <input value={state.response} />
+                        <input onKeyPress={inputKeyPress} onChange={updateResponse} value={state.response} />
                     </div>
                 )
             }
