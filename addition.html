@@ -19,12 +19,21 @@
                 const [state, setState] = React.useState({
                     num1: 1,
                     num2: 2,
-                    response: ""
+                    response: "",
+                    score: 0
                 });
 
                 function inputKeyPress(event) {
-                    
-                    
+                    if (event.key === "Enter") {
+                        const answer = parseInt(state.response);
+                        if (state.num1 + state.num2 === answer) {
+                            // User got question right
+                            
+                        } else {
+                            // User got question wrong
+
+                        }
+                    }
                 }
 
                 function updateResponse(event) {
