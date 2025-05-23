@@ -32,13 +32,15 @@
                                 ...state,
                                 num1: Math.ceil(Math.random() * 10),
                                 num2: Math.ceil(Math.random() * 10),
-                                score: state.score + 1
+                                score: state.score + 1,
+                                response: ""
                             });    
                         } else {
                             // User got question wrong
                             setState({
                                 ...state,
-                                score: state.score - 1
+                                score: state.score - 1,
+                                response: ""
                             });
                         }
                     }
