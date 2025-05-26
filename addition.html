@@ -10,6 +10,9 @@
                 text-align: center;
                 font-family: sans-serif;
             }
+            #problem {
+                font-size: 72px;
+            }
         </style>
     </head>
     <body>
@@ -61,7 +64,7 @@
 
                 return (
                     <div>
-                        <div>{state.num1} + {state.num2}</div>
+                        <div id="problem">{state.num1} + {state.num2}</div>
                         <input autoFocus={true} onKeyPress={inputKeyPress} onChange={updateResponse} value={state.response} />
                         <div>Score: {state.score}</div>
                     </div>
