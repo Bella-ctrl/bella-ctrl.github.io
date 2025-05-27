@@ -10,23 +10,38 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#back-button').addEventListener('click', () => {
     load_mailbox('inbox')
   });
-  
+
   send_email();
 
   // Load the inbox by default
   load_mailbox('inbox');
 });
 
-function compose_email() {
+function compose_email(action = 'new', email = null) {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
+  const recipients = document.querySelector('#compose-recipients');
+  const subject = document.querySelector('#compose-subject');
+  const body = document.querySelector('#compose-body');
+
+  recipients.value = '';
+  subject.value = '';
+  body.value = '';
+
+  if (action === 'reply') {
+    recipients.value = email.sender;
+
+    subject.value = email.subject.startsWith('Re: ') 
+      ? email.subject 
+      : `Re: ${email.subject}`;
+
+    body.value = `\n\nOn ${email.timestamp}, ${email.sender} wrote:\n${email.body}`;
+  }
 }
 
 function send_email() {
