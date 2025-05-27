@@ -104,8 +104,40 @@ function load_mailbox(mailbox) {
 }
 
 function view_email(email_id) {
-  // Hide other views
+  // Hide other views and show email view
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
-  document.querySelector('#email-view').style.display = 'block'; 
+  document.querySelector('#email-view').style.display = 'block';
+
+  // Get the email
+  fetch(`/emails/${email_id}`)
+    .then(response => response.json())
+    .then(email => {
+      // Display email
+      document.querySelector('#email-sender').innerHTML = email.sender;
+      document.querySelector('#email-recipients').innerHTML = email.recipients.join(', ');
+      document.querySelector('#email-subject').innerHTML = email.subject;
+      document.querySelector('#email-timestamp').innerHTML = email.timestamp;
+      document.querySelector('#email-body').innerHTML = email.body;
+
+      // Mark as read if it isn't already
+      if (!email.read) {
+        fetch(`/emails/${email_id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+              read: true
+          })
+        });
+      }
+
+      // Set up reply button
+      document.querySelector('#reply-button').onclick = () => {
+        compose_email('reply', email);
+      };
+    })
+    .catch(error => {
+      console.error('Error loading email:', error);
+      document.querySelector('#email-view').innerHTML = 
+        '<p class="error">Error loading email. Please try again.</p>';
+    });
 }
