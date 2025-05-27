@@ -23,29 +23,41 @@ function compose_email() {
 }
 
 function send_email() {
-  // Code to send the email 
-  document.addEventListener('#sent').onclick = function() {
+  const form = document.querySelector('#compose-form');
+  
+  form.onsubmit = function() {
     // Get the values from the compose fields
     const recipients = document.querySelector('#compose-recipients').value;
     const subject = document.querySelector('#compose-subject').value;
     const body = document.querySelector('#compose-body').value;
+    
     // Send the email using fetch API
     fetch('/emails', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         recipients: recipients,
         subject: subject,
         body: body
       })
-      .then(response => response.json())
-      .then(result => {
-        // Handle the response from the server
-        console.log(result);
-        // Optionally, you can load the sent mailbox or show a success message
-        load_mailbox('sent');
-      })
     })
-}}
+
+    .then(response => response.json())
+    .then(result => {
+      console.log(result);
+      load_mailbox('sent');
+
+    })
+    
+    .catch(error => {
+      console.log('Error:', error);
+    });
+    
+    return false;
+  };
+}
 
 function load_mailbox(mailbox) {
   
