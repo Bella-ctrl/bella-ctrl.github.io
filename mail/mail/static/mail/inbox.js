@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#compose').addEventListener('click', compose_email);
 
   // By default, load the inbox
+  document.querySelector('#back-button').addEventListener('click', () => {
+    load_mailbox('inbox')
+  });
+  
+  send_email();
+
+  // Load the inbox by default
   load_mailbox('inbox');
 });
 
@@ -64,6 +71,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
