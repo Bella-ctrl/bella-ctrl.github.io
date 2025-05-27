@@ -104,5 +104,8 @@ function load_mailbox(mailbox) {
 }
 
 function view_email(email_id) {
-  
+  // Hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'block'; 
 }
