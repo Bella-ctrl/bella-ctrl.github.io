@@ -102,3 +102,7 @@ function load_mailbox(mailbox) {
         `<p class="error">Error loading ${mailbox} mailbox. Please try again.</p>`;
     });
 }
+
+function view_email(email_id) {
+  
+}
