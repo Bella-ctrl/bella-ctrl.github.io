@@ -157,6 +157,25 @@ function view_email(email_id) {
       document.querySelector('#reply-button').onclick = () => {
         compose_email('reply', email);
       };
+
+      // Add archive/unarchive button logic
+      const archiveBtn = document.createElement('button');
+      archiveBtn.className = 'btn btn-sm mt-3 me-2';
+      archiveBtn.innerHTML = email.archived ? 'Unarchive' : 'Archive';
+      archiveBtn.className += email.archived ? ' btn-success' : ' btn-warning';
+      
+      archiveBtn.addEventListener('click', () => {
+        fetch(`/emails/${email_id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+              archived: !email.archived
+          })
+        })
+        .then(() => load_mailbox('inbox'));
+      });
+
+      // Insert before reply button
+      document.querySelector('#reply-button').before(archiveBtn);
     })
     .catch(error => {
       console.error('Error loading email:', error);
