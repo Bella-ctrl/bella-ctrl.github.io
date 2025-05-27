@@ -20,6 +20,16 @@ function compose_email() {
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
+
+  // Code to send the email 
+  document.addEventListener('#sent').onclick = function() {
+    // Get the values from the compose fields
+    const recipients = document.querySelector('#compose-recipients').value;
+    const subject = document.querySelector('#compose-subject').value;
+    const body = document.querySelector('#compose-body').value;
+    // Send the email using fetch API
+    fetch
+  }
 }
 
 function load_mailbox(mailbox) {
