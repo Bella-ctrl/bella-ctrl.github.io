@@ -50,7 +50,7 @@ function send_email() {
       load_mailbox('sent');
 
     })
-    
+
     .catch(error => {
       console.log('Error:', error);
     });
@@ -67,4 +67,38 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+  // Get the emails for the selected mailbox
+  fetch(`/emails/${mailbox}`)
+    .then(response => response.json())
+    .then(emails => {
+      // Container for emails
+      const emailsContainer = document.createElement('div');
+      emailsContainer.id = 'emails-container';
+
+      // Loop through each email and create a list item
+      emails.forEach(email => {
+        const emailElement = document.createElement('div');
+        emailElement.className = `email ${email.read ? 'read' : 'unread'}`;
+        
+        // Add email content
+        emailElement.innerHTML = `
+          <div class="email-sender">${email.sender}</div>
+          <div class="email-subject">${email.subject}</div>
+          <div class="email-timestamp">${email.timestamp}</div>
+        `;
+        // Add click event to view the email
+        emailElement.addEventListener('click', () => view_email(email.id));
+        
+        // Append the email item to the emails view
+        emailsContainer.appendChild(emailElement);
+      });
+      // Add emails to the DOM  
+      document.querySelector('#emails-view').appendChild(emailsContainer);
+    })
+    .catch(error => {
+      console.error('Error loading mailbox:', error);
+      document.querySelector('#emails-view').innerHTML = 
+        `<p class="error">Error loading ${mailbox} mailbox. Please try again.</p>`;
+    });
 }
