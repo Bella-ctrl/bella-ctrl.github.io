@@ -46,3 +46,25 @@ textarea {
   text-align: right;
   color: #666;
 }
+
+#email-view {
+  padding: 20px;
+}
+
+.email-header {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.email-header div {
+  margin-bottom: 5px;
+}
+
+.email-body {
+  padding: 20px 0;
+  white-space: pre-wrap; 
+}
+
+#reply-button {
+  margin-top: 15px;
+}
