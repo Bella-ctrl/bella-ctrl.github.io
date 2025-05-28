@@ -25,9 +25,22 @@ function compose_email() {
 function send_email() {
   // When submit is clicked, get the values from the form fields 
   document.querySelector('submit').onclick = function() {
+    preventDefault();
+    // Get the values from the form fields
     const recipients = document.querySelector('#compose-recipients').value ;
     const subject = document.querySelector('#compose-subject').value ; 
     const body = document.querySelector('#compose-body').value ;
+  
+    // Send the email using POST / emails
+    fetch('/emails', {
+      method: 'POST', 
+      body: JSON.stringify({
+        recipients: recipients,
+        subject: subject,
+        body: body
+      })
+    })
+
   }
 
 }
