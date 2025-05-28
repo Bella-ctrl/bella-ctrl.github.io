@@ -41,6 +41,14 @@ function send_email() {
       })
     })
 
+    .then(response => response.json())
+    .then(result => {
+      console.log(result);
+    })
+
+    .catch(error => {
+      console.error('Error:', error);
+    })
   }
 
 }
