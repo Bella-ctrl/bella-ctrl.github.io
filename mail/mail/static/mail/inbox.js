@@ -23,35 +23,46 @@ function compose_email() {
 }
 
 function send_email() {
-  // Get the form element
-  const form = document.querySelector('#compose-form'); // Asumo que tu formulario tiene este ID
+  document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('#compose-form');
   
-  // Add submit event listener to the form (better than click on button)
   form.addEventListener('submit', function(event) {
-    event.preventDefault(); // Corregido: debe ser event.preventDefault()
+    event.preventDefault(); // Crucial - stops page reload
     
-    // Get the values from the form fields
+    // Get values
     const recipients = document.querySelector('#compose-recipients').value;
-    const subject = document.querySelector('#compose-subject').value; 
+    const subject = document.querySelector('#compose-subject').value;
     const body = document.querySelector('#compose-body').value;
-  
-    // Send the email using POST /emails
+    const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // Send POST request
     fetch('/emails', {
-      method: 'POST', 
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrf,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         recipients: recipients,
         subject: subject,
         body: body
       })
     })
-    .then(response => response.json())
-    .then(result => {
-      console.log(result);
-      // Load the user's sent mailbox after successful send
-      load_mailbox('sent');
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Success:', data);
+      // Load sent mailbox - adjust based on your app's structure
+      window.location.href = '/emails/sent'; 
     })
     .catch(error => {
       console.error('Error:', error);
+      alert('Error sending email'); // User feedback
+      });
     });
   });
 }
