@@ -22,6 +22,16 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
+function send_email() {
+  // When submit is clicked, get the values from the form fields 
+  document.querySelector('submit').onclick = function() {
+    const recipients = document.querySelector('#compose-recipients').value ;
+    const subject = document.querySelector('#compose-subject').value ; 
+    const body = document.querySelector('#compose-body').value ;
+  }
+
+}
+
 function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
