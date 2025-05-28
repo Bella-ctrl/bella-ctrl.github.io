@@ -23,15 +23,19 @@ function compose_email() {
 }
 
 function send_email() {
-  // When submit is clicked, get the values from the form fields 
-  document.querySelector('submit').onclick = function() {
-    preventDefault();
-    // Get the values from the form fields
-    const recipients = document.querySelector('#compose-recipients').value ;
-    const subject = document.querySelector('#compose-subject').value ; 
-    const body = document.querySelector('#compose-body').value ;
+  // Get the form element
+  const form = document.querySelector('#compose-form'); // Asumo que tu formulario tiene este ID
   
-    // Send the email using POST / emails
+  // Add submit event listener to the form (better than click on button)
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Corregido: debe ser event.preventDefault()
+    
+    // Get the values from the form fields
+    const recipients = document.querySelector('#compose-recipients').value;
+    const subject = document.querySelector('#compose-subject').value; 
+    const body = document.querySelector('#compose-body').value;
+  
+    // Send the email using POST /emails
     fetch('/emails', {
       method: 'POST', 
       body: JSON.stringify({
@@ -40,18 +44,16 @@ function send_email() {
         body: body
       })
     })
-    // Handles the response from the server 
     .then(response => response.json())
     .then(result => {
       console.log(result);
+      // Load the user's sent mailbox after successful send
+      load_mailbox('sent');
     })
-
-    // Catch any errors that occur during the fetch operation
     .catch(error => {
       console.error('Error:', error);
     });
-  }
-
+  });
 }
 
 function load_mailbox(mailbox) {
