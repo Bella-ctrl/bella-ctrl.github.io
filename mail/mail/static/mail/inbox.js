@@ -49,7 +49,7 @@ function send_email() {
     // Catch any errors that occur during the fetch operation
     .catch(error => {
       console.error('Error:', error);
-    })
+    });
   }
 
 }
