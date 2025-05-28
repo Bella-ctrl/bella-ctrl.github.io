@@ -40,12 +40,13 @@ function send_email() {
         body: body
       })
     })
-
+    // Handles the response from the server 
     .then(response => response.json())
     .then(result => {
       console.log(result);
     })
 
+    // Catch any errors that occur during the fetch operation
     .catch(error => {
       console.error('Error:', error);
     })
