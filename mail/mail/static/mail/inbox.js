@@ -26,9 +26,9 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
-<<<<<<< HEAD
 function send_email(event) {  
   event.preventDefault(); 
+  console.log("Email send initiated");
   
   // Get values from the form fields
   const recipients = document.querySelector('#compose-recipients').value;
@@ -36,31 +36,14 @@ function send_email(event) {
   const body = document.querySelector('#compose-body').value;
   const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-  // Debug: Log the values before sending
-  console.log('Attempting to send:', {recipients, subject, body});
-
+  console.log("Sending to:", recipients);
+  
   // Send POST request
   fetch('/emails', {
     method: 'POST',
     headers: {
       'X-CSRFToken': csrf,
       'Content-Type': 'application/json'
-=======
-function send_email(event) {
-  event.preventDefault();
-  
-  // Get values from form
-  const recipients = document.querySelector('#compose-recipients').value;
-  const subject = document.querySelector('#compose-subject').value;
-  const body = document.querySelector('#compose-body').value;
-
-  // Send email via API
-  fetch('/emails', {
-    method: 'POST',
-    headers: {
-      'X-CSRFToken': getCookie('csrftoken'),
-      'Content-Type': 'application/json',
->>>>>>> 959123a2e6f140860607eb2663fed5b12c99a8aa
     },
     body: JSON.stringify({
       recipients: recipients,
@@ -69,38 +52,23 @@ function send_email(event) {
     })
   })
   .then(response => {
-<<<<<<< HEAD
-    console.log('Received response status:', response.status);
-    if (!response.ok) {
-      // Get the error message if exists
-      return response.json().then(err => { 
-        throw new Error(err.error || 'Unknown error');
-      });
-    }
-    return response.json();
+    console.log('Response status:', response.status);
+    return response.json().then(data => ({
+      status: response.status,
+      data
+    }));
   })
-  .then(data => {
-    console.log('Success:', data);
-    load_mailbox('sent'); // Use your existing function
+  .then(({status, data}) => {
+    console.log('Full response:', data);
+    if (status === 201) {
+      load_mailbox('sent');
+    } else {
+      throw new Error(data.error || 'Email sending failed');
+    }
   })
   .catch(error => {
-    console.error('Error:', error);
-    alert('Error: ' + error.message); // Show actual error message
-=======
-    if (response.status !== 201) {
-      return response.json().then(error => { throw new Error(error.error); });
-    }
-    return response.json();
-  })
-  .then(result => {
-    console.log(result);
-    // Load the sent mailbox after successful send
-    load_mailbox('sent');
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert(error.message);
->>>>>>> 959123a2e6f140860607eb2663fed5b12c99a8aa
+    console.error('Error details:', error);
+    alert('Error: ' + error.message);
   });
 }
 
@@ -141,53 +109,4 @@ function load_mailbox(mailbox) {
       }
     })
     .catch(error => console.error('Error loading emails:', error));
-}
-
-function view_email(email_id) {
-  // Fetch the email
-  fetch(`/emails/${email_id}`)
-    .then(response => response.json())
-    .then(email => {
-      // Display the email
-      document.querySelector('#emails-view').innerHTML = `
-        <div class="email-view">
-          <div><strong>From:</strong> ${email.sender}</div>
-          <div><strong>To:</strong> ${email.recipients.join(', ')}</div>
-          <div><strong>Subject:</strong> ${email.subject}</div>
-          <div><strong>Timestamp:</strong> ${email.timestamp}</div>
-          <hr>
-          <div class="email-body">${email.body}</div>
-        </div>
-      `;
-      
-      // Mark as read
-      if (!email.read) {
-        fetch(`/emails/${email_id}`, {
-          method: 'PUT',
-          headers: {
-            'X-CSRFToken': getCookie('csrftoken'),
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            read: true
-          })
-        });
-      }
-    });
-}
-
-// Helper function to get CSRF token
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
 }
