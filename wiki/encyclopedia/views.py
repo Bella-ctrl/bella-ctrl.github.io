@@ -16,7 +16,9 @@ def entry(request, title):
             "message": "Entry not found."
         })
     
-
+    # Convert the Markdown Content to HTML
+    html_content = markdown.markdown(entry)
     return render(request, "encyclopedia/entry.html", {
-        "entry": entry
+        "title": title,
+        "content": html_content
     })
