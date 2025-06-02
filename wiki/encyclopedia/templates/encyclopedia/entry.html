@@ -5,5 +5,8 @@
 {% endblock %}
 
 {% block body %}
-
+    <h1>{{ entry.title }}</h1>
+    <div class="entry-content">
+        {{ entry.content|safe }}
+    </div>
 {% endblock %}
