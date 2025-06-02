@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import markdown
 
 from . import util
 
@@ -14,6 +15,8 @@ def entry(request, title):
         return render(request, "encyclopedia/error.html", {
             "message": "Entry not found."
         })
+    
+
     return render(request, "encyclopedia/entry.html", {
         "entry": entry
     })
