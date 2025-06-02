@@ -15,5 +15,5 @@ def entry(request, title):
             "message": "Entry not found."
         })
     return render(request, "encyclopedia/entry.html", {
-        "entry": entry 
+        "entry": entry
     })
