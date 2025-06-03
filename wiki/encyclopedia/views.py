@@ -13,12 +13,12 @@ def entry(request, title):
     entry = util.get_entry(title)
     if entry is None:
         return render(request, "encyclopedia/entry.html", {
-            "message": f"Entry {title} not found."
+            "message": f" The requested entry '{title.upper()}' couldn't be found."
         })
     
     # Convert the Markdown Content to HTML
     html_content = markdown.markdown(entry)
     return render(request, "encyclopedia/entry.html", {
-        "title": title,
+        "title": title.upper(),
         "content": html_content
     })
