@@ -105,8 +105,24 @@ def edit(request, title):
 
 def create(request):
     if request.method == "POST":
-        pass
+        form = CreateForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"].strip()
+            content = form.cleaned_data["content"].strip()
+            
+            # Checks if entry title already exists
+            if util.get_entry(title):
+                return render(request, "encyclopedia/create.html", {
+                    "form": form,
+                    "error": f"An entry with the title '{title}' already exists.",
+                    "title": "Create New Entry"
+                })
+            
+            # Save the new entry
+            util.save_entry(title, content)
+            return redirect("entry", title=title)
     else: # For GET request
         return render(request, "encyclopedia/create.html", {
-            "form": CreateForm()
+            "form": CreateForm(),
+            "title": "Create New Entry"
         }) 

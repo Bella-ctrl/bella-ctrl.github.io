@@ -8,4 +8,7 @@
         {{ form.as_table }}
         <button type="submit" class="btn btn-primary">Create Page</button>
     </form>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
 {% endblock %}
