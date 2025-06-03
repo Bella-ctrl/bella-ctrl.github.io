@@ -88,3 +88,6 @@ def edit(request, title):
         "form": form,
         "title": title.capitalize()
     })
+
+def create(request):
+    pass
