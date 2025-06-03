@@ -22,3 +22,21 @@ def entry(request, title):
         "title": title.upper(),
         "content": html_content
     })
+
+def search(request):
+    entries = util.list_entries()
+    query = request.GET.get("q", "").strip().lower()
+    if query in entries:
+        return entry(request, query)
+    else:
+        # Filter entries that contain the query
+        matching_entries = [entry for entry in entries if query in entry.lower()]
+        
+        return render(request, "encyclopedia/search_results.html", {
+            "query": query,
+            "entries": matching_entries
+        }) if matching_entries else render(request, "encyclopedia/entry.html", {
+            "message": f"No entries found for '{query}'."
+        })
+    
+
