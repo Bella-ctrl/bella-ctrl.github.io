@@ -1,6 +1,7 @@
 from django import forms
 from django.shortcuts import redirect, render
 import markdown
+import random
 
 from . import util
 
@@ -134,3 +135,13 @@ def create(request):
         "form": form,
         "title": "Create New Entry"
     })
+
+def random(request):
+    entries = util.list_entries()
+    if not entries:
+        return render(request, "encyclopedia/entry.html", {
+            "message": "No entries available to display."
+        })  
+    
+    random_title = random.choice(entries)
+    return redirect("entry", title=random_title)
