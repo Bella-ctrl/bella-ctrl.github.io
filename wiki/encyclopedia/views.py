@@ -143,5 +143,6 @@ def random(request):
             "message": "No entries available to display."
         })  
     
+    # Selects random entry
     random_title = choice(entries)
     return redirect("entry", title=random_title)
