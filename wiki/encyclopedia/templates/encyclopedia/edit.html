@@ -1,13 +1,32 @@
 {% extends "encyclopedia/layout.html" %}
 
-{% block title %}Edit Page{% endblock %}
+{% block title %}Edit {{ title }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Page</h1>
+    <h1>Edit: {{ title }}</h1>
+    
     <form action="{% url 'edit' title=title %}" method="post">
         {% csrf_token %}
-        {{ form.as_p}}
+        
+        {# Display non-field errors #}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        
+        {# Render form fields manually for better control #}
+        <div class="form-group">
+            <label for="id_content">Content:</label>
+            {{ form.content }}
+            {% if form.content.errors %}
+                <div class="text-danger">
+                    {{ form.content.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
         <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'entry' title=title %}" class="btn btn-secondary">Cancel</a>
     </form>
-
 {% endblock %}
