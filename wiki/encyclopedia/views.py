@@ -16,13 +16,24 @@ class EditForm(forms.Form):
 
 class CreateForm(forms.Form):
     title = forms.CharField(
-        widget=forms.TextInput(attrs={"placeholder": "Enter title here"}),
-        label=" Title",
+        widget=forms.TextInput(attrs={
+            "placeholder": "Enter title here",
+            "class": "form-control mb-3",
+        }),
+        label="Title",
         max_length=100,
+        help_text="Maximum 100 characters",
+        required=True
     )
     content = forms.CharField(
-        widget=forms.Textarea(),
-        label=" Content"
+        widget=forms.Textarea(attrs={
+            "class": "form-control mb-3",
+            "rows": 10,
+            "placeholder": "Enter Markdown content here..."
+        }),
+        label="Content",
+        help_text="Use Markdown formatting",
+        required=True
     )
 
 def index(request):
@@ -118,11 +129,11 @@ def create(request):
                     "title": "Create New Entry"
                 })
             
-            # Save the new entry
+            # Saves new entry
             util.save_entry(title, content)
             return redirect("entry", title=title)
     else: # For GET request
         return render(request, "encyclopedia/create.html", {
             "form": CreateForm(),
             "title": "Create New Entry"
-        }) 
+        })
