@@ -18,21 +18,15 @@ class CreateForm(forms.Form):
     title = forms.CharField(
         widget=forms.TextInput(attrs={
             "placeholder": "Enter title here",
-            "class": "form-control mb-3",
         }),
         label="Title",
-        max_length=100,
-        help_text="Maximum 100 characters",
         required=True
     )
     content = forms.CharField(
         widget=forms.Textarea(attrs={
-            "class": "form-control mb-3",
-            "rows": 10,
             "placeholder": "Enter Markdown content here..."
         }),
         label="Content",
-        help_text="Use Markdown formatting",
         required=True
     )
 
