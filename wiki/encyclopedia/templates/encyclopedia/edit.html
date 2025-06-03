@@ -8,6 +8,6 @@
     <form action="{% url 'edit' title=title %}" method="post">
         {% csrf_token %}
         {{ form.as_table }}
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="submit">Save Changes</button>
     </form>
 {% endblock %}
