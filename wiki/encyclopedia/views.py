@@ -121,19 +121,22 @@ def create(request):
             title = form.cleaned_data["title"].strip()
             content = form.cleaned_data["content"].strip()
             
-            # Checks if entry title already exists
-            if util.get_entry(title):
+            # Case-insensitive duplicate check
+            existing_entries = [e.lower() for e in util.list_entries()]
+            if title.lower() in existing_entries:
                 return render(request, "encyclopedia/create.html", {
                     "form": form,
                     "error": f"An entry with the title '{title}' already exists.",
                     "title": "Create New Entry"
                 })
             
-            # Saves new entry
             util.save_entry(title, content)
             return redirect("entry", title=title)
-    else: # For GET request
-        return render(request, "encyclopedia/create.html", {
-            "form": CreateForm(),
-            "title": "Create New Entry"
-        })
+    
+    else:  # GET request
+        form = CreateForm()
+    
+    return render(request, "encyclopedia/create.html", {
+        "form": form,
+        "title": "Create New Entry"
+    })
