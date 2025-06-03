@@ -63,10 +63,13 @@ def search(request):
     })
 
 class EditForm(forms.Form):
+    title = forms.CharField(
+        disabled=True,  # Prevents editing
+        widget=forms.TextInput(attrs={"readonly": "readonly"})
+    )
     content = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 10, 'cols': 40}),
-        label="Markdown Content",
-        required=True
+        widget=forms.Textarea(),
+        label="Markdown Content"
     )
 
 def edit(request, title):
