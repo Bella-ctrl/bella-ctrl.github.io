@@ -69,7 +69,7 @@ class EditForm(forms.Form):
     )
     content = forms.CharField(
         widget=forms.Textarea(),
-        label="Markdown Content"
+        label=" Content"
     )
 
 def edit(request, title):
