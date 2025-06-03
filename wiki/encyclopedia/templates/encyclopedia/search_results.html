@@ -7,7 +7,7 @@
 
     {% if query %}
         <ul>
-            {% for entry in query %}
+            {% for query in entries %}
                 <li>
                     <a href="{% url 'entry' query %}">{{ query }}</a>
                 </li>
