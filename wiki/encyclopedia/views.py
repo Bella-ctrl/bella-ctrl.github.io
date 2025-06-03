@@ -86,5 +86,5 @@ def edit(request, title):
     
     return render(request, "encyclopedia/edit.html", {
         "form": form,
-        "title": title
+        "title": title.capitalize()
     })
