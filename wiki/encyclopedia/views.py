@@ -4,11 +4,32 @@ import markdown
 
 from . import util
 
+class EditForm(forms.Form):
+    title = forms.CharField(
+        disabled=True,  # Prevents editing
+        widget=forms.TextInput(attrs={"readonly": "readonly"})
+    )
+    content = forms.CharField(
+        widget=forms.Textarea(),
+        label=" Content"
+    )
+
+class CreateForm(forms.Form):
+    title = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "Enter title here"}),
+        label=" Title",
+        max_length=100,
+    )
+    content = forms.CharField(
+        widget=forms.Textarea(),
+        label=" Content"
+    )
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
     })
+
 
 def entry(request, title):
     entry = util.get_entry(title)
@@ -23,6 +44,7 @@ def entry(request, title):
         "title": title.upper(),
         "content": html_content
     })
+
 
 def search(request):
     # Get all entries and the search query
@@ -62,15 +84,6 @@ def search(request):
         "title": "Search Results"
     })
 
-class EditForm(forms.Form):
-    title = forms.CharField(
-        disabled=True,  # Prevents editing
-        widget=forms.TextInput(attrs={"readonly": "readonly"})
-    )
-    content = forms.CharField(
-        widget=forms.Textarea(),
-        label=" Content"
-    )
 
 def edit(request, title):
     previous_content = util.get_entry(title)
@@ -89,8 +102,11 @@ def edit(request, title):
         "title": title.capitalize()
     })
 
+
 def create(request):
     if request.method == "POST":
         pass
     else: # For GET request
-        return render(request, "encyclopedia/create.html") 
+        return render(request, "encyclopedia/create.html", {
+            "form": CreateForm()
+        }) 
