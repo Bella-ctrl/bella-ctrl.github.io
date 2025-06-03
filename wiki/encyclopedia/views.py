@@ -90,4 +90,7 @@ def edit(request, title):
     })
 
 def create(request):
-    pass
+    if request.method == "POST":
+        pass
+    else: # For GET request
+        return render(request, "encyclopedia/create.html") 
