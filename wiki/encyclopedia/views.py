@@ -82,7 +82,7 @@ def edit(request, title):
             util.save_entry(title, content)
             return redirect("entry", title=title)  # Redirects to the entry page
     else:
-        form = EditForm(initial={"content": previous_content})
+        form = EditForm(initial={"content": previous_content, "title": title})
     
     return render(request, "encyclopedia/edit.html", {
         "form": form,
