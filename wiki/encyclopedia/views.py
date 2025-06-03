@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django import forms
+from django.shortcuts import redirect, render
 import markdown
 
 from . import util
@@ -61,7 +62,26 @@ def search(request):
         "title": "Search Results"
     })
 
+class EditForm(forms.Form):
+    content = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 10, 'cols': 40}),
+        label="Markdown Content",
+        required=True
+    )
+
 def edit(request, title):
-    pass
-
-
+    previous_content = util.get_entry(title)
+    
+    if request.method == "POST":
+        form = EditForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data["content"]
+            util.save_entry(title, content)
+            return redirect("entry", title=title)  # Redirects to the entry page
+    else:
+        form = EditForm(initial={"content": previous_content})
+    
+    return render(request, "encyclopedia/edit.html", {
+        "form": form,
+        "title": title
+    })
