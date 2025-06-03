@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import redirect, render
 import markdown
-import random
+from random import choice
 
 from . import util
 
@@ -143,5 +143,5 @@ def random(request):
             "message": "No entries available to display."
         })  
     
-    random_title = random.choice(entries)
+    random_title = choice(entries)
     return redirect("entry", title=random_title)
