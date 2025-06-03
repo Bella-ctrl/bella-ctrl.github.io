@@ -17,6 +17,9 @@
         <div id="entryContent">
             {{ content|safe }}
         </div>
+        <div id="entryEdit">
+            <a href="{% url 'edit' title %}">Edit this page</a>
+        </div>
     {% endif %}
 
 {% endblock %}
