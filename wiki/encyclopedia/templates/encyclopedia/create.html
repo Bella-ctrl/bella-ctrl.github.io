@@ -3,4 +3,9 @@
 
 {% block body %}
     <h1>Create a New Page</h1>
+    <form action="{% url 'create' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_table }}
+        <button type="submit" class="btn btn-primary">Create Page</button>
+    </form>
 {% endblock %}
