@@ -12,8 +12,8 @@ def index(request):
 def entry(request, title):
     entry = util.get_entry(title)
     if entry is None:
-        return render(request, "encyclopedia/error.html", {
-            "message": "Entry not found."
+        return render(request, "encyclopedia/entry.html", {
+            "message": f"Entry {title} not found."
         })
     
     # Convert the Markdown Content to HTML
