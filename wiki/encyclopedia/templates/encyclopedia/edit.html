@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>Edit: {{ title }}</h1>
+    <small class="text-muted">Note: Use Markdown syntax (e.g., **bold**). HTML tags will not render.</small>
     <form action="{% url 'edit' title=title %}" method="post">
         {% csrf_token %}
         {{ form.as_table }}
