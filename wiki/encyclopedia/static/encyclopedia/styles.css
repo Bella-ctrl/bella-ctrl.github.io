@@ -37,18 +37,3 @@ textarea {
     margin-top: 5px;
 }
 
-#entryContent {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-#notFound {
-    padding: 20px;
-    text-align: center;
-}
-
-.main h1 {
-    padding-left: 20px; 
-}
