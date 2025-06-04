@@ -15,7 +15,9 @@ class Listings(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
 
 class Bids(models.Model):
-    pass
+    listing = models.ForeignKey(Listings, on_delete=models.CASCADE, related_name="bids")
+    bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidder")
 
 class Comments(models.Model):
     pass
