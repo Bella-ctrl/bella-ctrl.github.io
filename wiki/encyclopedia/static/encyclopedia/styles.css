@@ -8,7 +8,8 @@ body {
 
 /* === Sidebar === */
 .sidebar {
-    background-color: #fff;
+    background-color:#ff85a2;
+    color: white;
     border-right: 1px solid #ffd6e0;
     height: 100vh;
     position: fixed;
@@ -24,7 +25,7 @@ body {
 }
 
 .sidebar a {
-    color: #666;
+    color: white !important;;
     display: block;
     padding: 8px 0;
     transition: all 0.3s;
@@ -38,7 +39,7 @@ body {
 
 /* === Main Content === */
 .main {
-    margin-left: 250px; /* Match sidebar width */
+    margin-left: 250px; 
     padding: 30px;
     background-color: #fff;
     min-height: 100vh;
@@ -70,6 +71,12 @@ textarea, input[type="text"] {
 textarea:focus, input[type="text"]:focus {
     border-color: #ff85a2 !important;
     box-shadow: 0 0 0 3px rgba(255, 133, 162, 0.2) !important;
+}
+
+.sidebar input[type="text"] {
+    width: calc(100% - 24px);
+    margin: 0 auto;
+    display: block;
 }
 
 /* === Buttons === */
