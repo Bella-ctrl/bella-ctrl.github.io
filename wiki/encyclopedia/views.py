@@ -6,13 +6,26 @@ from random import choice
 from . import util
 
 class EditForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        title = kwargs.pop('title', None)
+        super().__init__(*args, **kwargs)
+        if title:
+            self.fields['title'].initial = title
+
     title = forms.CharField(
-        disabled=True,  # Prevents editing
-        widget=forms.TextInput(attrs={"readonly": "readonly"})
+        disabled=True,
+        required=False,  # This is the key fix
+        widget=forms.TextInput(attrs={
+            "readonly": "readonly",
+            "class": "form-control-plaintext"  # Optional styling
+        })
     )
     content = forms.CharField(
-        widget=forms.Textarea(),
-        label=" Content"
+        widget=forms.Textarea(attrs={
+            "class": "form-control",
+            "rows": 10
+        }),
+        label="Content"
     )
 
 class CreateForm(forms.Form):
