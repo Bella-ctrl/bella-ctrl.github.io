@@ -4,84 +4,77 @@ body {
     font-family: 'Segoe UI', Roboto, sans-serif;
     color: #333;
     line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
 /* === Sidebar === */
 .sidebar {
-    background-color: #f8f9fa;  /* Light gray background */
-    border-right: 1px solid #e0e0e0;
+    background-color: #d81b60;
+    color: white;
     height: 100vh;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    padding: 25px;
+    position: fixed;
+    width: 250px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
 .sidebar h2 {
-    color: #ff85a2;
+    color: white;
     font-weight: 700;
-    border-bottom: 2px solid #ffd6e0;
-    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    padding-bottom: 15px;
+    margin-top: 0;
 }
 
 .sidebar a {
-    color: white !important;;
+    color: white !important;
     display: block;
-    padding: 8px 0;
+    padding: 10px 15px;
+    margin: 5px 0;
     transition: all 0.3s;
     text-decoration: none;
+    border-radius: 4px;
 }
 
 .sidebar a:hover {
-    color: #ff85a2;
+    background-color: rgba(255,255,255,0.2);
     transform: translateX(5px);
 }
 
+/* Search Box */
 .sidebar .search {
     background-color: rgba(255,255,255,0.2);
-    border: none;
-    color: black;
+    border: none !important;
+    color: white;
     width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
+    padding: 10px 15px;
     border-radius: 20px;
-    margin-bottom: 20px;
-    box-sizing: border-box; /* Fixes width issues */
+    margin: 15px 0 25px 0;
 }
 
-.sidebar input[type="text"] {
-    width: calc(100% - 24px);
-    margin: 0 auto;
-    display: block;
-}
-
-.sidebar div, 
-.main ul li {
-    border-bottom: none !important;
-    padding: 8px 0;
+.sidebar .search::placeholder {
+    color: rgba(255,255,255,0.7);
 }
 
 /* === Main Content === */
 .main {
-    margin-left: 250px; 
+    margin-left: 250px;
     padding: 30px;
-    background-color: #fff;
+    background-color: white;
     min-height: 100vh;
-    border-left: 1px solid #ffebf0;
 }
 
-.main ul {
-    border: none;
-    padding-left: 0;
-}
-
-.main ul li {
-    padding: 6px 0;
+.main > *:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 /* === Headers === */
 h1 {
-    color: #ff85a2;
+    color: #d81b60;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-top: 0;
     padding-bottom: 10px;
     border-bottom: 2px solid #ffebf0;
 }
@@ -100,32 +93,31 @@ textarea, input[type="text"] {
 }
 
 textarea:focus, input[type="text"]:focus {
-    border-color: #ff85a2 !important;
-    box-shadow: 0 0 0 3px rgba(255, 133, 162, 0.2) !important;
+    border-color: #d81b60 !important;
+    box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.2) !important;
 }
 
 /* === Buttons === */
 button, .btn {
-    background-color: #ff85a2 !important;
+    background-color: #d81b60 !important;
     color: white !important;
     border: none !important;
     border-radius: 20px !important;
-    padding: 8px 20px !important;
+    padding: 10px 25px !important;
     transition: all 0.3s !important;
 }
 
 button:hover, .btn:hover {
-    background-color: #ff6b8b !important;
+    background-color: #b0003a !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 4px 8px rgba(255, 107, 139, 0.3) !important;
+    box-shadow: 0 4px 8px rgba(176, 0, 58, 0.3) !important;
 }
 
 /* === Entry Content === */
 #entryContent {
-    background-color: #fff;
-    padding: 25px;
+    background-color: white;
+    padding: 0;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     margin-bottom: 30px;
 }
 
@@ -141,30 +133,25 @@ button:hover, .btn:hover {
     border-radius: 3px;
 }
 
-#entryContent p, 
-#entryContent li {
-    margin-bottom: 0.5em;
-}
-
 /* === Lists === */
 ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 ul li {
     padding: 8px 0;
-    border-bottom: 1px solid #ffebf0;
 }
 
 ul li a {
-    color: #ff85a2;
+    color: #d81b60;
     text-decoration: none;
     transition: all 0.2s;
 }
 
 ul li a:hover {
-    color: #ff6b8b;
+    color: #b0003a;
     padding-left: 5px;
 }
 
@@ -181,4 +168,16 @@ ul li a:hover {
     color: #999 !important;
     display: block;
     margin-bottom: 15px;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+    .main {
+        margin-left: 0;
+    }
 }
