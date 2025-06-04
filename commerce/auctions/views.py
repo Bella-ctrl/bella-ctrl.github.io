@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -61,6 +62,13 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+class CreateForm(forms.Form):
+    title = forms.CharField(label="Title", max_length=64)
+    starting_bid = forms.DecimalField(label="Starting Bid", max_digits=10, decimal_places=2)
+    description = forms.CharField(label="Description", widget=forms.Textarea, required=False)
+    image_url = forms.URLField(label="Image URL", required=False)
+    category = forms.CharField(label="Category", max_length=64, required=False)
 
 def create_listing(request):
     if request.method == "POST":
