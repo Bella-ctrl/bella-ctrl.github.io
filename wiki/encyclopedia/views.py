@@ -106,13 +106,13 @@ def edit(request, title):
     previous_content = util.get_entry(title)
     
     if request.method == "POST":
-        form = EditForm(request.POST)
+        form = EditForm(request.POST, title=title)
         if form.is_valid():
             content = form.cleaned_data["content"]
             util.save_entry(title, content)
             return redirect("entry", title=title)  # Redirects to the entry page
     else:
-        form = EditForm(initial={"content": previous_content, "title": title})
+        form = EditForm(initial={"content": previous_content}, title=title)
     
     return render(request, "encyclopedia/edit.html", {
         "form": form,
