@@ -20,4 +20,7 @@ class Bids(models.Model):
     bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidder")
 
 class Comments(models.Model):
-    pass
+    listing = models.ForeignKey(Listings, on_delete=models.CASCADE, related_name="comments")
+    comment_text = models.TextField()
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commenter")
+    created_at = models.DateTimeField(auto_now_add=True)
