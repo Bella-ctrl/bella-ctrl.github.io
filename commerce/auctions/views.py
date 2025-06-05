@@ -74,4 +74,6 @@ def create_listing(request):
     if request.method == "POST":
         pass
     else:
-        return render(request, "auctions/create_listing.html")
+        return render(request, "auctions/create_listing.html", {
+            "form": CreateForm()
+        })
