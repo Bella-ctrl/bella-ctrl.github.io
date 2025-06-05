@@ -9,66 +9,17 @@ from django.urls import reverse
 
 from .models import User, Listings, Bids, Comments
 
-
-class CreateForm(forms.Form):
-    title = forms.CharField(
-        label="Title",
-        max_length=64,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter listing title'
-        })
-    )
-    
-    starting_bid = forms.DecimalField(
-        label="Starting Bid ($)",
-        max_digits=10,
-        decimal_places=2,
-        min_value=0.01,
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control',
-            'step': '0.01'
-        })
-    )
-    
-    description = forms.CharField(
-        label="Description",
-        widget=forms.Textarea(attrs={
-            'class': 'form-control',
-            'rows': 4,
-            'placeholder': 'Describe your item...'
-        }),
-        required=False
-    )
-    
-    image_url = forms.URLField(
-        label="Image URL",
-        widget=forms.URLInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'https://example.com/image.jpg'
-        }),
-        required=False
-    )
-    
-    CATEGORY_CHOICES = [
-        ("", "Select a category"),  
-        ("Art", "Art"),
-        ("Clothing", "Clothing"),
-        ("Electronics", "Electronics"),
-        ("Home", "Home"),
-        ("Sports", "Sports"),
-        ("Toys", "Toys"),
-        ("Other", "Other"),
-    ]
-    
-    category = forms.ChoiceField(
-        label="Category",
-        choices=CATEGORY_CHOICES,
-        required=False,
-        widget=forms.Select(attrs={
-            'class': 'form-control'
-        })
-    )
+class CreateForm(forms.ModelForm):
+    class Meta:
+        model = Listings
+        fields = ['title', 'starting_bid', 'description', 'image_url', 'category']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'starting_bid': forms.NumberInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'image_url': forms.URLInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+        }
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -127,10 +78,6 @@ def register(request):
 
 
 def create_listing(request):
-    if not request.user.is_authenticated:
-        messages.warning(request, "You must be logged in to create a listing.")
-        return redirect('login')
-
     if request.method == "POST":
         form = CreateForm(request.POST)
         if form.is_valid():
@@ -141,7 +88,6 @@ def create_listing(request):
             messages.success(request, "Listing created successfully!")
             return redirect('index')
             
-        # If form is invalid, errors will be displayed in template
     else:
         form = CreateForm()
     
