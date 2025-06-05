@@ -22,7 +22,7 @@ class CreateForm(forms.Form):
         label="Starting Bid ($)",
         max_digits=10,
         decimal_places=2,
-        min_value=0.01,  # Ensures positive value
+        min_value=0.01,
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
             'step': '0.01'
@@ -49,7 +49,7 @@ class CreateForm(forms.Form):
     )
     
     CATEGORY_CHOICES = [
-        ("", "Select a category"),  # Empty/default choice
+        ("", "Select a category"),  
         ("Art", "Art"),
         ("Clothing", "Clothing"),
         ("Electronics", "Electronics"),
@@ -59,7 +59,7 @@ class CreateForm(forms.Form):
         ("Other", "Other"),
     ]
     
-    category = forms.ChoiceField(  # Changed from MultipleChoiceField
+    category = forms.ChoiceField(
         label="Category",
         choices=CATEGORY_CHOICES,
         required=False,
@@ -126,7 +126,30 @@ def register(request):
 
 def create_listing(request):
     if request.method == "POST":
-        pass
+        form = CreateForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            starting_bid = form.cleaned_data["starting_bid"]
+            description = form.cleaned_data["description"]
+            image_url = form.cleaned_data["image_url"]
+            category = form.cleaned_data["category"]
+
+            # Create a new listing
+            listing = Listings(
+                title=title,
+                starting_bid=starting_bid,
+                description=description,
+                image_url=image_url,
+                category=category,
+                owner=request.user
+            )
+            listing.save()
+
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "auctions/create_listing.html", {
+                "form": form
+            })      
     else:
         return render(request, "auctions/create_listing.html", {
             "form": CreateForm()
