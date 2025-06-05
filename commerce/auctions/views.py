@@ -103,3 +103,6 @@ def create_listing(request):
         "form": form,
         "title": "Create New Listing"
     })
+
+def listing(request, listing_id):
+    pass
