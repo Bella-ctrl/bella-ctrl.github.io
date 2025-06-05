@@ -5,8 +5,68 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Listings, Bids, Comments
 
+
+class CreateForm(forms.Form):
+    title = forms.CharField(
+        label="Title",
+        max_length=64,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter listing title'
+        })
+    )
+    
+    starting_bid = forms.DecimalField(
+        label="Starting Bid ($)",
+        max_digits=10,
+        decimal_places=2,
+        min_value=0.01,  # Ensures positive value
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'step': '0.01'
+        })
+    )
+    
+    description = forms.CharField(
+        label="Description",
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 4,
+            'placeholder': 'Describe your item...'
+        }),
+        required=False
+    )
+    
+    image_url = forms.URLField(
+        label="Image URL",
+        widget=forms.URLInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'https://example.com/image.jpg'
+        }),
+        required=False
+    )
+    
+    CATEGORY_CHOICES = [
+        ("", "Select a category"),  # Empty/default choice
+        ("Art", "Art"),
+        ("Clothing", "Clothing"),
+        ("Electronics", "Electronics"),
+        ("Home", "Home"),
+        ("Sports", "Sports"),
+        ("Toys", "Toys"),
+        ("Other", "Other"),
+    ]
+    
+    category = forms.ChoiceField(  # Changed from MultipleChoiceField
+        label="Category",
+        choices=CATEGORY_CHOICES,
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        })
+    )
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -63,12 +123,6 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-class CreateForm(forms.Form):
-    title = forms.CharField(label="Title", max_length=64)
-    starting_bid = forms.DecimalField(label="Starting Bid", max_digits=10, decimal_places=2)
-    description = forms.CharField(label="Description", widget=forms.Textarea, required=False)
-    image_url = forms.URLField(label="Image URL", required=False)
-    category = forms.CharField(label="Category", max_length=64, required=False)
 
 def create_listing(request):
     if request.method == "POST":
