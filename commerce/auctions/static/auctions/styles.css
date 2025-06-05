@@ -10,6 +10,14 @@ body {
     background-color: #fff;
 }
 
+
+.listing-context {
+    display: flex;
+    flex-direction: column;
+    line-height: 0.8;
+}
+
+
 .listing-image {
     max-width: 200px;
     max-height: 200px;
