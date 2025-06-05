@@ -4,12 +4,19 @@
     <h2>Active Listings</h2>
     <div class="listings">
         {% for listing in listings %}
-            <div class="listing">
+            <div class="listing-card">
                 <h3>{{ listing.title }}</h3>
+                <p class="text-muted">
+                    Listed on {{ listing.created_at|date:"F j, Y" }} by {{ listing.owner.username }}
+                </p>
                 <p>{{ listing.description }}</p>
                 <p>Price: ${{ listing.starting_bid }}</p>
+                {% if listing.image_url %}
+                    <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="listing-image">
+                {% endif %}
             </div>
         {% empty %}
             <p>No active listings available.</p>
         {% endfor %}
+    </div>
 {% endblock %}
