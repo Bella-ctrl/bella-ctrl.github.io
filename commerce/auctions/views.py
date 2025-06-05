@@ -1,9 +1,11 @@
 from django import forms
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
+
 
 from .models import User, Listings, Bids, Comments
 
@@ -125,32 +127,25 @@ def register(request):
 
 
 def create_listing(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "You must be logged in to create a listing.")
+        return redirect('login')
+
     if request.method == "POST":
         form = CreateForm(request.POST)
         if form.is_valid():
-            title = form.cleaned_data["title"]
-            starting_bid = form.cleaned_data["starting_bid"]
-            description = form.cleaned_data["description"]
-            image_url = form.cleaned_data["image_url"]
-            category = form.cleaned_data["category"]
-
-            # Create a new listing
-            listing = Listings(
-                title=title,
-                starting_bid=starting_bid,
-                description=description,
-                image_url=image_url,
-                category=category,
-                owner=request.user
-            )
+            listing = form.save(commit=False)
+            listing.owner = request.user
             listing.save()
-
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(request, "auctions/create_listing.html", {
-                "form": form
-            })      
+            
+            messages.success(request, "Listing created successfully!")
+            return redirect('index')
+            
+        # If form is invalid, errors will be displayed in template
     else:
-        return render(request, "auctions/create_listing.html", {
-            "form": CreateForm()
-        })
+        form = CreateForm()
+    
+    return render(request, "auctions/create_listing.html", {
+        "form": form,
+        "title": "Create New Listing"
+    })
