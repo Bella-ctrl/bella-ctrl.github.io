@@ -105,4 +105,15 @@ def create_listing(request):
     })
 
 def listing(request, listing_id):
-    pass
+    if request.method == "POST":
+        pass
+    else:
+        listing = Listings.objects.get(id=listing_id)
+        comments = Comments.objects.filter(listing=listing)
+        bids = Bids.objects.filter(listing=listing).order_by('-bid_amount')
+        
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            "comments": comments,
+            "bids": bids,
+        })
