@@ -105,6 +105,7 @@ def create_listing(request):
     })
 
 def listing(request, listing_id):
+    
     if request.method == "POST":
         pass
     else:
@@ -116,4 +117,5 @@ def listing(request, listing_id):
             "listing": listing,
             "comments": comments,
             "bids": bids,
+            "title": listing.title,
         })
