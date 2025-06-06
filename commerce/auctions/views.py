@@ -27,12 +27,6 @@ def index(request):
         "listings": Listings.objects.filter(is_active=True)
     })
 
-#Active Listings Page: The default route of your web application 
-#should let users view all of the currently active auction listings. 
-#For each active listing, this page should display (at minimum) 
-#the title, description, current price, and photo (if one exists for the listing).
-
-
 
 def login_view(request):
     if request.method == "POST":
