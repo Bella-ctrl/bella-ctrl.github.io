@@ -127,3 +127,26 @@ body {
     margin-bottom: 10px;
     color: #0d6efd;
 }
+
+/* Messages styling */
+.messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 300px;
+}
+
+.alert {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    opacity: 0.95;
+    transition: opacity 0.5s ease;
+}
+
+.alert:hover {
+    opacity: 1;
+}
+
+.btn-close {
+    padding: 0.5rem;
+}
