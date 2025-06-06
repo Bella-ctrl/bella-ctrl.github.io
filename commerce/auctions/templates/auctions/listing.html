@@ -28,16 +28,16 @@
             
             {% if user.is_authenticated %}
                 <div class="listing-actions">
-                    <!-- Watchlist toggle -->
-                    <form action="{% url 'watchlist_toggle' listing.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-{% if on_watchlist %}danger{% else %}success{% endif %}">
-                            {% if on_watchlist %}Remove from{% else %}Add to{% endif %} Watchlist
-                        </button>
-                    </form>
                     
                     <!-- Bid form -->
                     {% if listing.is_active and not is_owner %}
+                        <!-- Watchlist toggle -->
+                        <form action="{% url 'watchlist_toggle' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-{% if on_watchlist %}danger{% else %}success{% endif %}">
+                                {% if on_watchlist %}Remove from{% else %}Add to{% endif %} Watchlist
+                            </button>
+                        </form>
                         <form action="{% url 'place_bid' listing.id %}" method="post" class="bid-form">
                             {% csrf_token %}
                             <div class="form-group">
