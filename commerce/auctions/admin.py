@@ -2,8 +2,11 @@ from django.contrib import admin
 from .models import User, Listings, Bids, Comments, Watchlist
 
 # Register your models here.
-admin.site.register(User)
-admin.site.register(Listings)
-admin.site.register(Bids)
-admin.site.register(Comments)
-admin.site.register(Watchlist)
+class BasicAdmin(admin.ModelAdmin):
+    list_display = ('__str__',)  # Just shows the string representation
+
+admin.site.register(User, BasicAdmin)
+admin.site.register(Listings, BasicAdmin)
+admin.site.register(Bids, BasicAdmin)
+admin.site.register(Comments, BasicAdmin)
+admin.site.register(Watchlist, BasicAdmin)
