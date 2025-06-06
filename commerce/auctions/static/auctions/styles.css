@@ -1,7 +1,10 @@
+/* General Styles */
 body {
     padding: 10px;
 }
 
+
+/* Listing Styles */
 .listing-card {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -27,4 +30,43 @@ body {
 .text-muted {
     color: #6c757d;
     font-size: 0.9em;
+}
+.listing-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.listing-image img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.listing-details {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.listing-actions {
+    margin: 20px 0;
+}
+
+/*Bid Style*/
+.bid-form {
+    margin: 15px 0;
+}
+
+/* Comment Styles */
+.comment {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.comment-list {
+    margin-top: 20px;
 }
