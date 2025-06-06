@@ -106,24 +106,21 @@ def create_listing(request):
     })
 
 def listing(request, listing_id):
-    if request.method == "POST":
-        pass
-    else:
-        try:
-            listing = Listings.objects.get(id=listing_id)
-            comments = Comments.objects.filter(listing=listing_id).order_by('-created_at')
-            bids = Bids.objects.filter(listing=listing).order_by('-bid_amount')
+    try:
+        listing = Listings.objects.get(id=listing_id)
+        comments = Comments.objects.filter(listing=listing).order_by('-created_at')
+        bids = Bids.objects.filter(listing=listing).order_by('-bid_amount')
         
-            return render(request, "auctions/listing.html", {
-                "listing": listing,
-                "comments": comments,
-                "bids": bids,
-                "title": listing.title,
+        return render(request, "auctions/listing.html", {
+            "listing": listing,
+            "comments": comments,
+            "bids": bids,
+            "title": listing.title,
+    })
+    except Listings.DoesNotExist:
+        return render(request, "auctions/error.html", {
+            "message": "Listing not found."
         })
-        except Listings.DoesNotExist:
-            return render(request, "auctions/error.html", {
-                "message": "Listing not found."
-            })
 
 def watchlist(request):
     pass
