@@ -123,3 +123,9 @@ def listing(request, listing_id):
             return render(request, "auctions/error.html", {
                 "message": "Listing not found."
             })
+
+def watchlist(request):
+    pass
+
+def categories(request):
+    pass
