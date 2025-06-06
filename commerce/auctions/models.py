@@ -67,8 +67,19 @@ class Bids(models.Model):
         return f"${self.bid_amount} on {self.listing.title}"
 
 class Comments(models.Model):
-    id = models.AutoField(primary_key=True)
-    listing = models.ForeignKey(Listings, on_delete=models.CASCADE, related_name="comments")
-    comment_text = models.TextField()
-    commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commenter")
+    listing = models.ForeignKey(Listings, on_delete=models.CASCADE, related_name='listing_comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on {self.listing.title}"
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listings, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'listing')
+
