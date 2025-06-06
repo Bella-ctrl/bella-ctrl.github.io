@@ -1,13 +1,14 @@
 from django import forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.db.models import Max
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-
-from .models import User, Listings, Bids, Comments
+from .models import User, Listings, Bids, Comments, Watchlist
 
 class CreateForm(forms.ModelForm):
     class Meta:
