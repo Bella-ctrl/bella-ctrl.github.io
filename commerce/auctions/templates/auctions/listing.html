@@ -28,15 +28,17 @@
             
             {% if user.is_authenticated %}
                 <div class="listing-actions">
-                    <!-- Watchlist toggle -->
-                    <form action="{% url 'watchlist_toggle' listing.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-{% if on_watchlist %}danger{% else %}success{% endif %}">
-                            {% if on_watchlist %}Remove from{% else %}Add to{% endif %} Watchlist
-                        </button>
-                    </form>
+                    <!-- Watchlist toggle (only for non-owners) -->
+                    {% if not is_owner %}
+                        <form action="{% url 'watchlist_toggle' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-{% if on_watchlist %}danger{% else %}success{% endif %}">
+                                {% if on_watchlist %}Remove from{% else %}Add to{% endif %} Watchlist
+                            </button>
+                        </form>
+                    {% endif %}
                     
-                    <!-- Bid form -->
+                    <!-- Bid form (only for non-owners) -->
                     {% if listing.is_active and not is_owner %}
                         <div class="bid-section mt-4">
                             <h4>Place Bid</h4>
@@ -66,7 +68,7 @@
                         </div>
                     {% endif %}
                     
-                    <!-- Close auction button -->
+                    <!-- Close auction button (only for owner) -->
                     {% if is_owner and listing.is_active %}
                         <form action="{% url 'close_auction' listing.id %}" method="post">
                             {% csrf_token %}
