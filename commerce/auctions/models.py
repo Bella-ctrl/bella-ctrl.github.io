@@ -30,7 +30,8 @@ class Listings(models.Model):
     category = models.CharField(
         max_length=5,
         choices=CATEGORY_CHOICES,
-        blank=True
+        blank=True,
+        null=True
     )
     owner = models.ForeignKey(
         User,

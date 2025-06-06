@@ -217,4 +217,40 @@ def watchlist(request):
     })
 
 def categories(request):
-    pass
+    # Get all distinct categories that have active listings
+    categories = Listings.objects.filter(is_active=True)\
+                      .exclude(category__isnull=True)\
+                      .values_list('category', flat=True)\
+                      .distinct()
+    
+    # Convert to human-readable format with counts
+    category_list = []
+    for code, name in Listings.CATEGORY_CHOICES:
+        count = Listings.objects.filter(is_active=True, category=code).count()
+        if count > 0:
+            category_list.append({
+                'code': code,
+                'name': name,
+                'count': count
+            })
+    
+    return render(request, "auctions/categories.html", {
+        "categories": category_list,
+        "title": "All Categories"
+    })
+
+def category_listings(request, category_code):
+    # Get human-readable category name
+    category_name = dict(Listings.CATEGORY_CHOICES).get(category_code, "Unknown")
+    
+    listings = Listings.objects.filter(
+        is_active=True,
+        category=category_code
+    ).order_by('-created_at')
+    
+    return render(request, "auctions/category.html", {
+        "listings": listings,
+        "category_name": category_name,
+        "category_code": category_code,
+        "title": f"Category: {category_name}"
+    })
