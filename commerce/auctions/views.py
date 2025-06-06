@@ -215,3 +215,6 @@ def watchlist(request):
         "listings": listings,
         "title": "Your Watchlist"
     })
+
+def categories(request):
+    pass
