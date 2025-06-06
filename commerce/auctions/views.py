@@ -88,15 +88,19 @@ def create_listing(request):
             listing.owner = request.user
             listing.save()
             
-            messages.success(request, "Listing created successfully!")
+            # Add success flag to session instead of messages
+            request.session['listing_created'] = True
             return redirect('index')
             
     else:
         form = CreateForm()
+        # Check for success flag from redirect
+        created = request.session.pop('listing_created', False)
     
     return render(request, "auctions/create_listing.html", {
         "form": form,
-        "title": "Create New Listing"
+        "title": "Create New Listing",
+        "created": created  # Pass to template
     })
 
 def listing(request, listing_id):
