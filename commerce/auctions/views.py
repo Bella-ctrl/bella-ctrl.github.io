@@ -154,23 +154,38 @@ def watchlist_toggle(request, listing_id):
 def place_bid(request, listing_id):
     listing = get_object_or_404(Listings, id=listing_id)
     
+    if not listing.is_active:
+        messages.error(request, "This auction is closed and no longer accepting bids.")
+        return redirect('listing', listing_id=listing_id)
+    
     if request.method == "POST":
-        bid_amount = float(request.POST.get('bid_amount'))
-        current_price = Bids.objects.filter(listing=listing).aggregate(Max('bid_amount'))['bid_amount__max'] or listing.starting_bid
-        
-        if bid_amount < listing.starting_bid:
-            messages.error(request, "Bid must be at least the starting price")
-        elif bid_amount <= current_price:
-            messages.error(request, "Bid must be higher than current price")
-        else:
-            Bids.objects.create(
-                listing=listing,
-                bidder=request.user,
-                bid_amount=bid_amount
-            )
-            messages.success(request, "Bid placed successfully!")
+        try:
+            bid_amount = float(request.POST.get('bid_amount', 0))
+            
+            # Get current highest bid or starting price
+            current_price = listing.bids.aggregate(Max('bid_amount'))['bid_amount__max'] or listing.starting_bid
+            
+            if bid_amount < listing.starting_bid:
+                messages.error(request, 
+                    f"Bid must be at least the starting price of ${listing.starting_bid:.2f}")
+            elif listing.bids.exists() and bid_amount <= current_price:
+                messages.error(request, 
+                    f"Bid must be higher than current highest bid of ${current_price:.2f}")
+            else:
+                Bids.objects.create(
+                    listing=listing,
+                    bidder=request.user,
+                    bid_amount=bid_amount
+                )
+                messages.success(request, f"Successfully bid ${bid_amount:.2f}!")
+                
+        except ValueError:
+            messages.error(request, "Invalid bid amount. Please enter a valid number.")
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
     
     return redirect('listing', listing_id=listing_id)
+
 
 @login_required
 def close_auction(request, listing_id):
