@@ -204,3 +204,14 @@ def add_comment(request, listing_id):
             messages.success(request, "Comment added")
     
     return redirect('listing', listing_id=listing_id)
+
+@login_required
+def watchlist(request):
+    watchlist_items = Watchlist.objects.filter(user=request.user).select_related('listing')
+    
+    listings = [item.listing for item in watchlist_items]
+
+    return render(request, "auctions/watchlist.html", {
+        "listings": listings,
+        "title": "Your Watchlist"
+    })
