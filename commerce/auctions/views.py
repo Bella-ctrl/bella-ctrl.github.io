@@ -24,7 +24,7 @@ class CreateForm(forms.ModelForm):
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "listings": Listings.objects.all()
+        "listings": Listings.objects.filter(is_active=True)
     })
 
 #Active Listings Page: The default route of your web application 
