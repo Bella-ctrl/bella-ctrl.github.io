@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import Max
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from .models import User, Listings, Bids, Comments, Watchlist
@@ -111,19 +111,96 @@ def listing(request, listing_id):
         comments = Comments.objects.filter(listing=listing).order_by('-created_at')
         bids = Bids.objects.filter(listing=listing).order_by('-bid_amount')
         
-        return render(request, "auctions/listing.html", {
-            "listing": listing,
-            "comments": comments,
-            "bids": bids,
-            "title": listing.title,
-    })
+        # Get current price (highest bid or starting bid)
+        current_price = bids.aggregate(Max('bid_amount'))['bid_amount__max'] or listing.starting_bid
+        
+        # Check watchlist status
+        on_watchlist = False
+        if request.user.is_authenticated:
+            on_watchlist = Watchlist.objects.filter(user=request.user, listing=listing).exists()
+            
+            # Check if user is winner
+            is_winner = False
+            if not listing.is_active and bids.exists():
+                highest_bid = bids.first()
+                is_winner = highest_bid.bidder == request.user
+            
+        context = {
+            'listing': listing,
+            'comments': comments,
+            'bids': bids,
+            'current_price': current_price,
+            'on_watchlist': on_watchlist,
+            'is_owner': request.user == listing.owner,
+            'is_winner': is_winner if request.user.is_authenticated else False,
+            'title': listing.title
+        }
+        
+        return render(request, "auctions/listing.html", context)
+        
     except Listings.DoesNotExist:
         return render(request, "auctions/error.html", {
             "message": "Listing not found."
         })
 
-def watchlist(request):
-    pass
+@login_required
+def watchlist_toggle(request, listing_id):
+    listing = get_object_or_404(Listings, id=listing_id)
+    
+    if Watchlist.objects.filter(user=request.user, listing=listing).exists():
+        Watchlist.objects.filter(user=request.user, listing=listing).delete()
+        messages.success(request, "Removed from watchlist")
+    else:
+        Watchlist.objects.create(user=request.user, listing=listing)
+        messages.success(request, "Added to watchlist")
+    
+    return redirect('listing', listing_id=listing_id)
 
-def categories(request):
-    pass
+@login_required
+def place_bid(request, listing_id):
+    listing = get_object_or_404(Listings, id=listing_id)
+    
+    if request.method == "POST":
+        bid_amount = float(request.POST.get('bid_amount'))
+        current_price = Bids.objects.filter(listing=listing).aggregate(Max('bid_amount'))['bid_amount__max'] or listing.starting_bid
+        
+        if bid_amount < listing.starting_bid:
+            messages.error(request, "Bid must be at least the starting price")
+        elif bid_amount <= current_price:
+            messages.error(request, "Bid must be higher than current price")
+        else:
+            Bids.objects.create(
+                listing=listing,
+                bidder=request.user,
+                bid_amount=bid_amount
+            )
+            messages.success(request, "Bid placed successfully!")
+    
+    return redirect('listing', listing_id=listing_id)
+
+@login_required
+def close_auction(request, listing_id):
+    listing = get_object_or_404(Listings, id=listing_id, owner=request.user)
+    
+    if listing.is_active:
+        listing.is_active = False
+        listing.save()
+        messages.success(request, "Auction closed successfully")
+    
+    return redirect('listing', listing_id=listing_id)
+
+@login_required
+def add_comment(request, listing_id):
+    listing = get_object_or_404(Listings, id=listing_id)
+    
+    if request.method == "POST":
+        text = request.POST.get('comment_text')
+        if text:
+            Comments.objects.create(
+                listing=listing,
+                user=request.user,
+                text=text
+            )
+            messages.success(request, "Comment added")
+    
+    return redirect('listing', listing_id=listing_id)
