@@ -46,6 +46,8 @@ function load_mailbox(mailbox) {
        newEmail.className = 'list-group-item';
         newEmail.style.cursor = 'pointer';
         newEmail.style.border = '1px solid #ccc';
+        newEmail.style.padding = '10px';
+        newEmail.style.marginBottom = '10px';
        newEmail.innerHTML = `
        <strong>From:</strong> ${email.sender} <br>
        <strong>Subject:</strong> ${email.subject} <br>
