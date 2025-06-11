@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // By default, load the inbox
   load_mailbox('inbox');
+
+  // Handle the send email button
+  document.querySelector('#compose-form').addEventListener('submit', send_email)
 });
 
 function compose_email() {
@@ -30,4 +33,37 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+}
+
+// Function to send an email
+function send_email(event) {
+  
+  // Prevent the default form submission behavior
+  event.preventDefault();
+
+  // Getting the values from the compose form
+  const recipients = document.querySelector('#compose-recipients').value;
+  const subject = document.querySelector('#compose-subject').value;
+  const body = document.querySelector('#compose-body').value;
+
+  // Sending email via a POST request 
+  fetch('/emails', {
+    method: 'POST', 
+    body: JSON.stringify({
+      recipients: recipients,
+      subject: subject,
+      body: body
+    })
+  })
+  
+  .then(response => response.json())
+  .then(result => {
+    console.log(result);
+    load_mailbox('sent'); // Load the sent mailbox after sending the email
+  })
+
+  // Catch errors in the fetch request
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
