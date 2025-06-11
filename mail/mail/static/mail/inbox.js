@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
   load_mailbox('inbox');
 
   // Handle the send email button
-  document.querySelector('#compose-form').addEventListener('submit', send_email)
+  document.querySelector('#compose-form').onsubmit = function(event) {
+    send_email(event);
+  }
 });
 
 function compose_email() {
