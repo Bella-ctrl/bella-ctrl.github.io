@@ -42,17 +42,21 @@ function load_mailbox(mailbox) {
   .then(emails => {
     // Showing each email in the mailbox inside a div
     emails.forEach(email => {
-       const newEmail = document.createElement('div');
-       newEmail.className = 'list-group-item';
-        newEmail.style.cursor = 'pointer';
-        newEmail.style.border = '1px solid #ccc';
-        newEmail.style.padding = '10px';
-        newEmail.style.marginBottom = '10px';
-       newEmail.innerHTML = `
-       <strong>From:</strong> ${email.sender} <br>
-       <strong>Subject:</strong> ${email.subject} <br>
-       <strong>Timestamp:</strong> ${email.timestamp} <br>      
-       `; 
+      const newEmail = document.createElement('div');
+      newEmail.className = 'list-group-item';
+      newEmail.style.cursor = 'pointer';
+      newEmail.style.border = '1px solid #ccc';
+      newEmail.style.padding = '10px';
+      newEmail.style.marginBottom = '10px';
+      newEmail.innerHTML = `
+        <strong>From:</strong> ${email.sender} <br>
+        <strong>To:</strong> ${email.recipients.join(', ')} <br>
+        <strong>Subject:</strong> ${email.subject} <br>
+        <strong>Timestamp:</strong> ${email.timestamp} <br>      
+      `;
+      // Change the background color based on read status
+      newEmail.className = email.read ? 'read' : 'unread';
+      // Add an event listener to each email to view its details
        newEmail.addEventListener('click', function() {
        console.log('This element has been clicked!')
       });
