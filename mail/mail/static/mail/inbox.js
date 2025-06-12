@@ -30,10 +30,6 @@ function compose_email() {
 
 // Function to view the details of an email
 function view_email(email_id) {
-  // Show the email view and hide other views
-  document.querySelector('#emails-view').style.display = 'none';
-  document.querySelector('#email-view').style.display = 'block';
-
   
 }
 
@@ -41,6 +37,7 @@ function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
+  document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
@@ -74,6 +71,10 @@ function load_mailbox(mailbox) {
       }
       // Adding event listener to each email so when clicked its details are shown
        newEmail.addEventListener('click', function() {
+        // Showing the email view and hiding other views
+        document.querySelector('#email-view').style.display = 'block';
+        document.querySelector('#emails-view').style.display = 'none';
+        document.querySelector('#compose-view').style.display = 'none';
         view_email(email.id);
       });
     document.querySelector('#emails-view').append(newEmail);
