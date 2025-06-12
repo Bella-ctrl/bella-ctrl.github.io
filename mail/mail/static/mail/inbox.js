@@ -35,8 +35,19 @@ function view_email(email_id) {
   .then(email => {
     // Print email
     console.log(email);
+    // Showing the email view and hiding other views
+    document.querySelector('#email-view').style.display = 'block';
+    document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#compose-view').style.display = 'none';
+    // Show Email details
 
-    // ... do something else with email ...
+    document.querySelector('#email-view').innerHTML = `
+      <strong>From:</strong> ${email.sender} <br>
+      <strong>To:</strong> ${email.recipients} <br>
+      <strong>Subject:</strong> ${email.subject} <br>
+      <strong>Timestamp:</strong> ${email.timestamp} <br>
+      <div id="body">${email.body}</div>
+    `
   });
 }
 
@@ -78,10 +89,6 @@ function load_mailbox(mailbox) {
       }
       // Adding event listener to each email so when clicked its details are shown
        newEmail.addEventListener('click', function() {
-        // Showing the email view and hiding other views
-        document.querySelector('#email-view').style.display = 'block';
-        document.querySelector('#emails-view').style.display = 'none';
-        document.querySelector('#compose-view').style.display = 'none';
         view_email(email.id);
       });
     document.querySelector('#emails-view').append(newEmail);
