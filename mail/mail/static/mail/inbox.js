@@ -30,7 +30,14 @@ function compose_email() {
 
 // Function to view the details of an email
 function view_email(email_id) {
-  
+  fetch(`/emails/${email_id}`)
+  .then(response => response.json())
+  .then(email => {
+    // Print email
+    console.log(email);
+
+    // ... do something else with email ...
+  });
 }
 
 function load_mailbox(mailbox) {
