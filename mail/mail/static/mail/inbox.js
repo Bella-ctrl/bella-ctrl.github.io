@@ -27,6 +27,16 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
+
+// Function to view the details of an email
+function view_email(email_id) {
+  // Show the email view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'block';
+
+  
+}
+
 function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
@@ -62,9 +72,9 @@ function load_mailbox(mailbox) {
       } else if (email.unread) {
         newEmail.style.backgroundColor = '#ffffff'; // White for unread emails
       }
-      // Add an event listener to each email to view its details
+      // Adding event listener to each email so when clicked its details are shown
        newEmail.addEventListener('click', function() {
-
+        view_email(email.id);
       });
     document.querySelector('#emails-view').append(newEmail);
     });
