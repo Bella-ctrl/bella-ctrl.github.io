@@ -91,7 +91,11 @@ function view_email(email_id) {
 
       // Populate compose fields
       document.querySelector('#compose-recipients').value = email.sender;
-      document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
+      let subject = email.subject;
+      if (subject.split(' ',1)[0] != "Re:") {
+        subject = "Re: " + email.subject;
+      }
+      document.querySelector('#compose-subject').value = subject;
       document.querySelector('#compose-body').value = `"On ${email.timestamp}, ${email.sender} wrote: ${email.body}"`;
     });
     document.querySelector('#email-view').append(buttonRep);
