@@ -15,18 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+
 function compose_email() {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#email-view').style.display = 'none';
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
 }
-
 
 // Function to view the details of an email
 function view_email(email_id) {
@@ -35,22 +36,33 @@ function view_email(email_id) {
   .then(email => {
     // Print email
     console.log(email);
+
     // Showing the email view and hiding other views
     document.querySelector('#email-view').style.display = 'block';
     document.querySelector('#emails-view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'none';
-    // Show Email details
-
+    
+    // Show Email Details
     document.querySelector('#email-view').innerHTML = `
       <strong>From:</strong> ${email.sender} <br>
       <strong>To:</strong> ${email.recipients} <br>
       <strong>Subject:</strong> ${email.subject} <br>
       <strong>Timestamp:</strong> ${email.timestamp} <br>
-      <div id="body">${email.body}</div>
+      <div class="card"><div class="card-body">${email.body}</div></div>
     `
+    // 
+    if (!email.read) {
+      fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        read: true
+        })
+      })
+    }
   });
 }
 
+// Function to load each mailbox
 function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
