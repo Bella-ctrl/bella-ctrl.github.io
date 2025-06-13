@@ -50,7 +50,7 @@ function view_email(email_id) {
       <strong>Timestamp:</strong> ${email.timestamp} <br>
       <div class="card"><div class="card-body">${email.body}</div></div>
     `
-    // 
+    // Email is put like read
     if (!email.read) {
       fetch(`/emails/${email.id}`, {
       method: 'PUT',
@@ -59,6 +59,28 @@ function view_email(email_id) {
         })
       })
     }
+
+    // Archive and unarchive emails
+    const buttonArc = document.createElement('button');
+    buttonArc.className = 'btn btn-outline-dark'
+    buttonArc.style.marginTop = '2px';
+    if (email.archived) {
+      buttonArc.innerHTML = "Unarchive"
+    } else if (!email.archived) {
+      buttonArc.innerHTML = "Archive"
+    }
+    
+    buttonArc.addEventListener('click', function() {
+      fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        archived: !email.archived
+        })
+      })
+      load_mailbox('inbox');
+    });
+    
+    document.querySelector('#email-view').append(buttonArc);
   });
 }
 
