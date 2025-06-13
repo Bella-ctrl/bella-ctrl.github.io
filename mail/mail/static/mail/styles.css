@@ -2,9 +2,3 @@ textarea {
     min-height: 400px;
 }
 
-.read {
-    background-color: #ffffff;
-}
-.unread {
-    background-color: #E8E8E8;
-}
