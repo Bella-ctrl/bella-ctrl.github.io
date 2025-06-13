@@ -45,11 +45,11 @@ function view_email(email_id) {
     // Show Email Details
     document.querySelector('#email-view').innerHTML = `
       <strong>From:</strong> ${email.sender} <br>
-      <strong>To:</strong> ${email.recipients} <br>
+      <strong>To:</strong> ${email.recipients} <br>  
       <strong>Subject:</strong> ${email.subject} <br>
       <strong>Timestamp:</strong> ${email.timestamp} <br>
       <div class="card"><div class="card-body">${email.body}</div></div>
-    `
+      `
     // Email is put like read
     if (!email.read) {
       fetch(`/emails/${email.id}`, {
@@ -69,7 +69,6 @@ function view_email(email_id) {
     } else if (!email.archived) {
       buttonArc.innerHTML = "Archive"
     }
-    
     buttonArc.addEventListener('click', function() {
       fetch(`/emails/${email.id}`, {
       method: 'PUT',
@@ -77,10 +76,20 @@ function view_email(email_id) {
         archived: !email.archived
         })
       })
-      load_mailbox('inbox');
+      .then( () => {load_mailbox('inbox')});
     });
-    
     document.querySelector('#email-view').append(buttonArc);
+  
+    // Reply Button
+    const buttonRep = document.createElement('button');
+    buttonRep.className = 'btn btn-outline-dark'
+    buttonRep.innerHTML= "Reply";
+
+    buttonRep.addEventListener('click', function() {
+      console.log("reply")
+      compose_email();
+    });
+    document.querySelector('#email-view').append(buttonRep);
   });
 }
 
