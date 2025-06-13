@@ -15,9 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-
 function compose_email() {
-
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
@@ -29,7 +27,6 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
-// Function to view the details of an email
 function view_email(email_id) {
   fetch(`/emails/${email_id}`)
   .then(response => response.json())
@@ -49,40 +46,44 @@ function view_email(email_id) {
       <strong>Subject:</strong> ${email.subject} <br>
       <strong>Timestamp:</strong> ${email.timestamp} <br>
       <div class="card"><div class="card-body">${email.body}</div></div>
-      `
-    // Email is put like read
+      `;
+    
+    // Mark email as read
     if (!email.read) {
       fetch(`/emails/${email.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        read: true
+        method: 'PUT',
+        body: JSON.stringify({
+          read: true
         })
       })
     }
 
-    // Archive and unarchive emails
-    const buttonArc = document.createElement('button');
-    buttonArc.className = 'btn btn-outline-dark'
-    buttonArc.style.marginTop = '2px';
-    if (email.archived) {
-      buttonArc.innerHTML = "Unarchive"
-    } else if (!email.archived) {
-      buttonArc.innerHTML = "Archive"
-    }
-    buttonArc.addEventListener('click', function() {
-      fetch(`/emails/${email.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        archived: !email.archived
+    // Show Archive/Unarchive button only for inbox or archive (Not Sent)
+    const currentMailbox = window.location.hash.substring(1);
+    if (currentMailbox !== 'sent') {
+      const buttonArc = document.createElement('button');
+      buttonArc.className = 'btn btn-outline-dark';
+      buttonArc.style.marginTop = '2px';
+      buttonArc.style.marginRight = '5px';
+      
+      // Show "Archive" for inbox, "Unarchive" for archive
+      buttonArc.innerHTML = currentMailbox === 'inbox' ? "Archive" : "Unarchive";
+      
+      buttonArc.addEventListener('click', function() {
+        fetch(`/emails/${email.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            archived: currentMailbox === 'inbox' // Archive if from inbox, unarchive if from archive
+          })
         })
-      })
-      .then( () => {load_mailbox('inbox')});
-    });
-    document.querySelector('#email-view').append(buttonArc);
+        .then(() => { load_mailbox('inbox') }); // Always return to inbox after
+      });
+      document.querySelector('#email-view').append(buttonArc);
+    }
   
-    // Reply Button
+    // Reply Button (unchanged)
     const buttonRep = document.createElement('button');
-    buttonRep.className = 'btn btn-outline-dark'
+    buttonRep.className = 'btn btn-outline-dark';
     buttonRep.innerHTML= "Reply";
 
     buttonRep.addEventListener('click', function() {
@@ -102,9 +103,7 @@ function view_email(email_id) {
   });
 }
 
-// Function to load each mailbox
 function load_mailbox(mailbox) {
-  
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#email-view').style.display = 'none';
@@ -113,14 +112,15 @@ function load_mailbox(mailbox) {
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
+  // Update URL hash to track current mailbox
+  window.location.hash = mailbox;
+
   // Fetch the emails for the selected mailbox
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
     // Showing each email in the mailbox inside a div
     emails.forEach(email => {
-      console.log(email);
-
       const newEmail = document.createElement('div');
       newEmail.className = 'list-group-item';
       newEmail.style.cursor = 'pointer';
@@ -132,25 +132,24 @@ function load_mailbox(mailbox) {
         <strong>Subject:</strong> ${email.subject} <br>
         <strong>Timestamp:</strong> ${email.timestamp} <br>      
       `;
-
+      
       // Change the background color based on read status
       if (email.read) {
         newEmail.style.backgroundColor = '#E0E0E0'; // Light gray for read emails
-      } else if (email.unread) {
+      } else {
         newEmail.style.backgroundColor = '#ffffff'; // White for unread emails
       }
-      // Adding event listener to each email so when clicked its details are shown
-       newEmail.addEventListener('click', function() {
+      
+      // Adding event listener to each email
+      newEmail.addEventListener('click', function() {
         view_email(email.id);
       });
-    document.querySelector('#emails-view').append(newEmail);
+      document.querySelector('#emails-view').append(newEmail);
     });
   });
 }
 
-// Function to send the emails
 function send_email(event) {
-  
   // Prevent the default form submission behavior
   event.preventDefault();
 
@@ -168,14 +167,13 @@ function send_email(event) {
       body: body
     })
   })
-  
+
   .then(response => response.json())
   .then(result => {
     console.log(result);
-    load_mailbox('sent'); // Load the sent mailbox after sending the email
+    load_mailbox('sent');
   })
-
-  // Catch errors in the fetch request
+  
   .catch(error => {
     console.error('Error:', error);
   });
