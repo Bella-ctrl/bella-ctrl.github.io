@@ -14,23 +14,28 @@
 
 
 
-# String types
-name = "Harry"
-print(name[0]) # H
-
-# List types
+# Data structures
+## Dict - collection of key-value pairs
+## List - seq of mutable values
 names = ["Harry", "Ron", "Hermione"]
-print(names[0]) # Harry
-print(names[1]) # Ron
-print(names[2]) # Hermione
+print(names[0])  # Harry
+names.append("Draco")  # Adding a new name
+names.sort()  # Sorting the list
+print(names)  # ['Draco', 'Harry', 'Hermione', 'Ron']
 
-# Tuple types -  value pairs that cannot be changed
+## Tuple - seq of immutable values
 point = (10, 20)
 print(point[0]) # 10
 print(point[1]) # 20
 
-# Data structures
-## Dict - collection of key-value pairs
-## List - seq of mutable values
-## Tuple - seq of immutable values
 ## Set - collection of unique values that are unordered
+s = set()
+s.add(1)  # Adding a number
+s.add(2)  # Adding another number
+s.add(1)  # Adding a duplicate number (no effect)
+print(s)  # {1, 2}
+s.remove(1)  # Removing a number
+print(s)  # {2}
+
+fruits = {"apple", "banana", "cherry"}
+fruits.add("orange")  # Adding a new fruit
