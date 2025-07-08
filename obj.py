@@ -17,8 +17,7 @@ class Flight():
 flight = Flight(3)  # Create a flight with a capacity of 3 passengers
 people = ["Alice", "Bob", "Charlie", "David"]
 for person in people:
-    success = flight.add_passenger(person)
-    if success:
+    if flight.add_passenger(person):
         print(f"Added {person} to flight successfully.")
     else:
         print(f"No available seat for {person}.")
