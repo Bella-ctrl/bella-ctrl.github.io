@@ -16,9 +16,19 @@ class Flight():
         self.passengers = [] # List to store passengers that starts empty
 
     def add_passenger(self, name): # Method to add a passenger
+        if not self.open_seat():
+            return False
         self.passengers.append(name) # Add the passenger's name to the list
+        return True
 
     def open_seat(self):
         return self.capacity - len(self.passengers)
 
 flight = Flight(3)  # Create a flight with a capacity of 3 passengers
+people = ["Alice", "Bob", "Charlie", "David"]
+for person in people:
+    success = flight.add_passenger(person)
+    if success:
+        print(f"Added {person} to flight successfully.")
+    else:
+        print(f"No available seat for {person}.")
