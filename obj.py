@@ -15,4 +15,10 @@ class Flight():
         self.capacity = capacity
         self.passengers = [] # List to store passengers that starts empty
 
+    def add_passenger(self, name): # Method to add a passenger
+        self.passengers.append(name) # Add the passenger's name to the list
+
+    def open_seat(self):
+        return self.capacity - len(self.passengers)
+
 flight = Flight(3)  # Create a flight with a capacity of 3 passengers
