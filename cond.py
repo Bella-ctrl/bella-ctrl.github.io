@@ -11,4 +11,8 @@ elif x > y:
     print("X is greater than Y")
 else:
     print("X is equal to Y")
-print("Done")
+
+if x < y or x > y:
+    print("X is not equal to Y")
+else:
+    print("X is equal to Y")
