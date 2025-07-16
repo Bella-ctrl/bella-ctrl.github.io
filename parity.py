@@ -8,6 +8,7 @@ def main():
         print("X is odd")
 
 def is_even(n):
+    # Return n % 2 == 0
     if n % 2 == 0:
         return True
     else:
