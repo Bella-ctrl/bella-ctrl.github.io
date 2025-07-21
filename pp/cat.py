@@ -1,5 +1,11 @@
-for i in range(3):
+# for i in range(3):
     # For i in [0, 1, 2]
-    print("Meow")
+    # print("Meow")
 
-print("Hello\n" * 5)
+while True:
+    n = int(input("Enter a number (0 to exit): "))
+    if n > 0:
+        break
+
+for i in range(n):
+    print("Meow")
