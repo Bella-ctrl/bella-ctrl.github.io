@@ -1,13 +1,28 @@
 # Dictionary of students
-students = {
-    "Hermione": "Gryffindor",
-    "Harry": "Gryffindor",
-    "Ron": "Gryffindor",
-    "Draco": "Slytherin",
-}
+#students = {
+ #   "Hermione": "Gryffindor",
+  # "Ron": "Gryffindor",
+   # "Draco": "Slytherin",
+#}
+
+#for student in students:
+ #   print(f"{student} is in {students[student]}")
+
+
+students = [
+    {"name": "Hermione", "house": "Gryffindor", "patronus": "Otter"},
+    {"name": "Harry", "house": "Gryffindor", "patronus": "Stag"},
+    {"name": "Ron", "house": "Gryffindor", "patronus": "Jack Russell Terrier"},
+    {"name": "Draco", "house": "Slytherin", "patronus": "None"},
+]
 
 for student in students:
-    print(f"{student} is in {students[student]}")
+    print(f"Name: {student['name']}, House: {student['house']}, Patronus: {student['patronus']}")
+
+
+
+
+
 
 
 
