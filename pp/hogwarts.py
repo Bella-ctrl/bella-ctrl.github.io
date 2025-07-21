@@ -25,7 +25,20 @@ def print_column(height):
 def print_row(width):
     print("?" * width)
 
+def main():
+    print_column(5)
+    print_row(5)
+    print_square(5)
 
+def print_square(size):
+    # Print a square of bricks
+    for i in range(size):
+        #for each brick in the row
+        for j in range(size):
+            # print brick
+            print("#", end="")
+        print()
+main()
 
 # List of students
 #students = ["Hermione", "Harry", "Ron"]
