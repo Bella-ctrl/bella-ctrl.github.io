@@ -21,10 +21,9 @@ for student in students:
 
 def print_column(height):
     print("#\n" * height, end="")
-    
 
-
-
+def print_row(width):
+    print("?" * width)
 
 
 
