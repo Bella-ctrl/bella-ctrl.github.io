@@ -1,4 +1,5 @@
-i = 0
-while i < 3:
+for i in range(3):
+    # For i in [0, 1, 2]
     print("Meow")
-    i += 1
+
+print("Hello\n" * 5)
