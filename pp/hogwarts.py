@@ -19,7 +19,9 @@ students = [
 for student in students:
     print(f"Name: {student['name']}, House: {student['house']}, Patronus: {student['patronus']}")
 
-
+def print_column(height):
+    print("#\n" * height, end="")
+    
 
 
 
