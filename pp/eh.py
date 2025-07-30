@@ -2,8 +2,8 @@
 # sys.argv is used to get the command line arguments
 
 import sys
-#try:
- 
+#try:, except IndexError
+
 if len(sys.argv) < 2:
     sys.exit("Too few arguments provided")
 #elif len(sys.argv) > 2:
