@@ -1,4 +1,4 @@
-name = input("Enter your name: ")
+name = input("Enter your name: ").capitalize()
 
 match name:
     case "Harry":
