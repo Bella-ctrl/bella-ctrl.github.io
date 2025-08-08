@@ -1,5 +1,5 @@
 def main():
-    number = int(input("Enter a number: "))
+    number = input("Enter a number: ")
     print(f"The square of {number} is {square(number)}")
 
 def square(num):
