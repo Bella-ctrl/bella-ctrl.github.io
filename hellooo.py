@@ -1,16 +1,17 @@
 ## Just to have a commit todat
 ## Just to have a commit todat
 class Hello():
-    def __init__(self, name):
+    def __init__(self, name, last):
         self.name = name
+        self.last = last
 
-    def __str__(name):
-        return f"Hello {self.name}, nice to meet you!"
+    def __str__(self):
+        return f"Hello {self.name} {self.last}, nice to meet you!"
 
 def main():
-    salute = Hello()
     name = input("Introduce your name: ")
-    print(Hello(name))
+    last = input("Introduce your last name: ")
+    print(Hello(name, last))
 
 if __name__ == "__main__":
     main()
